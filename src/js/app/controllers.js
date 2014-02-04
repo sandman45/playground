@@ -12,3 +12,8 @@ controllers.controller('d3Ctrl', ['$scope',//$http,$routParams
     function($scope) {
         $scope.title = 'D3!!!!!!!!!!!';
     }]);
+
+controllers.controller('mainCtrl', ['$scope',//$http,$routParams
+    function($scope) {
+        $scope.title = 'Main Controller!';
+    }]);

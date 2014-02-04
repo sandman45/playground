@@ -9,6 +9,14 @@ var playGroundApp = angular.module('playGroundApp', [
 playGroundApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
+            when('/index',{
+                templateUrl:'views/playground/main.html',
+                controller:'mainCtrl'
+            }).
+            when('/myCarousel',{
+                templateUrl:'views/playground/main.html',
+                controller:'mainCtrl'
+            }).
             when('/playground/world', {
                 templateUrl: 'views/playground/world.html',
                 controller: 'worldCtrl'
@@ -16,7 +24,8 @@ playGroundApp.config(['$routeProvider',
             when('/playground/d3', {
                 templateUrl: 'views/playground/d3.html',
                 controller: 'd3Ctrl'
-            }).
+            })
+            .
             otherwise({
                 redirectTo: '/index'
             });
