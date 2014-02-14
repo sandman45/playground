@@ -1,1 +1,37 @@
 <h2>{{title}}</h2>
+
+<section id="accountLayouts" style="display: block;">
+    <div class="btn-group" data-ng-repeat="button in buttons">
+        <button type="button" class="btn btn-default" data-ng-click="triggerLayout(button);" style="">{{button.label}}</button>
+    </div>
+</section>
+<div id="container" class="panel panel-default" style="height: 600px;width: 100%;">
+    <div d3-bubble-testing
+         id="bubbleChart"
+         width="fluidWidth_bubbleContainer"
+         tt="false"
+         data="cOptions.data"
+         layout="cOptions.layout"
+         layout-metrics="cOptions.layoutMetrics"
+         legend-data="cOptions.legendData"
+         click="cOptions.click"
+         render="cOptions.render"
+         change-cat-metric="cOptions.changeCategoryMetric"
+         radius-scale-metric="cOptions.radiusScaleMetric"
+         domain-metric="cOptions.domainMetric"
+         value-metric="cOptions.valueMetric"
+         time-metric="cOptions.timeMetric"
+         color-metric="cOptions.colorMetric"
+         random-data="true"
+         color-fill="cOptions.colorFill"
+         color-stroke="cOptions.colorStroke"
+         colors="cOptions.colors"
+         color-high="cOptions.colorHigh"
+         color-low="cOptions.colorLow"
+         margin-bottom="40"
+         margin-left="40"
+         margin-right="40"
+         margin-top="40"
+         class="card inner-shadow"
+         style="position: relative;"></div>
+</div>

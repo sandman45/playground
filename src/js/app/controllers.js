@@ -3,17 +3,9 @@
  */
 var controllers = angular.module('controllers', []);
 
-controllers.controller('worldCtrl', ['$scope',//$http,$routParams
-    function ($scope, $http) {
-        $scope.title = 'WORLD!!!!!!';
-    }]);
 
-controllers.controller('d3Ctrl', ['$scope',//$http,$routParams
-    function($scope) {
-        $scope.title = 'D3!!!!!!!!!!!';
-    }]);
 
 controllers.controller('mainCtrl', ['$scope',//$http,$routParams
     function($scope) {
-        $scope.title = 'Main Controller!';
+        $scope.title = '';
     }]);
