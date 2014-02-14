@@ -26,6 +26,11 @@ playGroundApp.config(['$routeProvider',
                 controller: 'd3Ctrl'
             })
             .
+            when('/playground/metals', {
+                templateUrl: 'views/playground/metals.html',
+                controller: 'metalsCtrl'
+            })
+            .
             otherwise({
                 redirectTo: '/index'
             });
