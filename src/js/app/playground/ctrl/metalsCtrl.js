@@ -106,7 +106,8 @@ controllers.controller('metalsCtrl', ['$scope','$http',//$routParams
                 });
         }
 
-        $scope.data = testData;
+        $scope.data = [testData];
+
 
         $scope.cOptions = {
             labelType:'onBa',

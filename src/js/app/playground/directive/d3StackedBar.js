@@ -1,5 +1,5 @@
 /* global angular, d3 */
-angular.module('solar').directive('d3StackedBar', [function () {
+angular.module('playGroundApp').directive('d3StackedBar', [function () {
     function link(scope, el, colors, attrs, cntr) {
 
         /** CHART DIV: DOM Element which houses the line chart */
