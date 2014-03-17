@@ -23,7 +23,7 @@ var server = http.createServer(app);
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.multipart());
-app.use(express.static('public'));
+app.use(express.static('src'));
 app.use(allowCrossDomain);
 
 // Load all other routes
@@ -31,7 +31,7 @@ fs.readdirSync(__dirname + '/routes').forEach(function(file) {
     require('./routes/' + file)(app);
 });
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8081;
 server.listen(port, function() {
     console.log('PORT: ', port, ' ENV: ', process.env.NODE_ENV);
 });
