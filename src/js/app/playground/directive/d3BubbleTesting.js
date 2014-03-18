@@ -149,7 +149,7 @@ angular.module('playGroundApp').directive('d3BubbleTesting', [function () {
                     return time;
                 }
                 data = [];
-                for (var j = 0; j < 250; j++) {
+                for (var j = 0; j < 25; j++) {
                     data.push({id: j, metrics: {metric1: rng(1), metric2: rng(2), metric3: rng(3),metric4:rngTime(j)}, key: "bubble-" + j, fields: {sentiment: "POSITIVE"}});
                 }
             }else{

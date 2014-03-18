@@ -176,6 +176,15 @@ angular.module('playGroundApp').directive('d3StackedBar', [function () {
                         return d.y0 + d.y;
                     });
                 });
+
+                console.log(width + ", "+scope.width);
+
+//                if(_.isDate(data[0].x)){
+//                    x = d3.time.scale().range([0,width-(margin.left+margin.right+55)]);
+//                }else{
+//                    x = d3.scale.linear().range([0,width-(margin.left+margin.right+55)]);
+//                }
+
                 x = d3.scale.ordinal().domain(data[0].map(
                     function (d) {
                         return d.xLabel;
@@ -204,9 +213,9 @@ angular.module('playGroundApp').directive('d3StackedBar', [function () {
                                     var _c = color(bar);
                                     return _c;
                                 })
-                                .attr("x", function(d) { return x(d.x); })
+                                .attr("x", function(d) {return x(d.x); })
                                 .attr("y", function(){return (height -(margin.bottom)); })
-                                .attr("width", x.rangeBand())
+                                .attr("width",function(){return x.rangeBand();})
                                 .attr("height", 0);
 
                             rect.transition()
@@ -244,9 +253,14 @@ angular.module('playGroundApp').directive('d3StackedBar', [function () {
                                     var _c = color(bar);
                                     return _c;
                                 })
-                                .attr("x", function (d) {return x(d.x);})
+                                .attr("x", function(d) {
+                                   // console.log(x(d.x));
+                                    return x(d.x); })
                                 .attr("y", function () {return (height-(margin.bottom));})
-                                .attr("width",function(){return x.rangeBand();})
+                                .attr("width",function(){
+                                   // console.log(x.rangeBand());
+                                    return x.rangeBand();
+                                })
                                 .attr("height", 0);
 
                             rect.transition()

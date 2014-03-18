@@ -58,7 +58,7 @@ controllers.controller('d3Ctrl', ['$scope',//$http,$routParams
             colorHigh: '#ff8200',
             colorLow: '#77c0d5',
             chartLabel:'Bubble Chart',
-            data:[],
+            //data:[],
             layout:function(arr){
                 for(var button in $scope.buttons){
                     if($scope.buttons[button].active){
@@ -121,7 +121,7 @@ controllers.controller('d3Ctrl', ['$scope',//$http,$routParams
             $scope.cOptions.render?$scope.cOptions.render=false:$scope.cOptions.render=true;
         };
 
-        var data = bumpLayer(2,2);
+        //var data = bumpLayer(2,8);
 
         /**
          * bumpLayer
