@@ -4,6 +4,7 @@
 var fs = require('fs');
 var http = require('http');
 var express = require('express');
+var schedule = require('node-schedule');
 /**
  * allowCrossDomain
  * @param req
@@ -30,6 +31,12 @@ app.use(allowCrossDomain);
 fs.readdirSync(__dirname + '/routes').forEach(function(file) {
     require('./routes/' + file)(app);
 });
+
+//Load Scheduled Tasks
+fs.readdirSync(__dirname + '/schedule').forEach(function(file){
+  require('./schedule/' + file)(app,schedule);
+});
+
 
 var port = process.env.PORT || 8081;
 server.listen(port, function() {

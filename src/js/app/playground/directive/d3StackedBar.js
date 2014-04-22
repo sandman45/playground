@@ -210,8 +210,7 @@ angular.module('playGroundApp').directive('d3StackedBar', [function () {
                             rect.enter().append("rect")
                                 .attr("class","rect"+bar)
                                 .style("fill", function (d, i) {
-                                    var _c = color(bar);
-                                    return _c;
+                                    return setColor(d);
                                 })
                                 .attr("x", function(d) {return x(d.x); })
                                 .attr("y", function(){return (height -(margin.bottom)); })
@@ -250,8 +249,7 @@ angular.module('playGroundApp').directive('d3StackedBar', [function () {
                             rect.enter().append("rect")
                                 .attr("class","rect"+bar)
                                 .style("fill", function (d, i) {
-                                    var _c = color(bar);
-                                    return _c;
+                                    return setColor(d);
                                 })
                                 .attr("x", function(d) {
                                    // console.log(x(d.x));
@@ -300,8 +298,7 @@ angular.module('playGroundApp').directive('d3StackedBar', [function () {
                             rect.enter().append("rect")
                                 .attr("class","rect"+bar)
                                 .style("fill", function (d, i) {
-                                    var _c = color(bar);
-                                    return _c;
+                                    return setColor(d);
                                 })
                                 .attr("x", function (d) {return x(d.x);})
                                 .attr("y", function () {return (height-(margin.bottom));})
@@ -558,7 +555,12 @@ angular.module('playGroundApp').directive('d3StackedBar', [function () {
                     });
             }
         }
-
+        function setColor(d){
+            if(d.color){
+                return d.color;
+            }
+            return color(d);
+        }
         /**
          *Function bumpLayer
          * -creates random data

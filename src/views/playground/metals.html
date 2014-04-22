@@ -1,4 +1,11 @@
 <h2>{{title}}</h2>
+<section>
+    <div class="btn-group" data-ng-repeat="button in buttons">
+        <button type="button" class="btn btn-default btn-success" data-ng-click="button.func(button)">{{button.label}}</button>
+    </div>
+
+
+</section>
 <div id="container" style="height: 400px;width: 100%;">
     <div data-d3-stacked-bar
          data-chart-data="data"
