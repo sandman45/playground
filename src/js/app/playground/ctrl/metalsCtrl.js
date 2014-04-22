@@ -9,29 +9,27 @@ controllers.controller('metalsCtrl', ['$scope','$http',//$routParams
         $scope.title = 'Metals';
 var bars = 50;
 
-        function selectBtn(btn){
+        function selectedBtn(btn){
 
-        }
+        };
 
         $scope.buttons = [
             {
                 label:'Grouped',
-                active:true,
-                func:selectedBtn
+                active:true
+//                func:selectedBtn
             },
             {
                 label:'Stacked',
-                active:false,
-                func:selectedBtn
+                active:false
+//                func:selectedBtn
             },
             {
                 label:'Overlay',
-                active:false,
-                func:selectedBtn
+                active:false
+//                func:selectedBtn
             }
         ];
-
-
 
         $scope.data = [];
         var holder = [];
@@ -49,8 +47,6 @@ var bars = 50;
 //                });
 //        }
 //        $scope.data.push(testData);
-
-
 
         $scope.cOptions = {
             labelType:'onBa',
@@ -164,10 +160,4 @@ var bars = 50;
             .error(function(data,status,headers,config){
                 console.log("error getting metals feed");
             });
-
-
-
-
-
-
     }]);
