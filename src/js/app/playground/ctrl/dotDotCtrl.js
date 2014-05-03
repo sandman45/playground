@@ -6,15 +6,17 @@ controllers.controller('dotDotCtrl', ['$scope',
     $scope.title = "Dot Dot!";
     $scope.startGame = start;
 //    $scope.showStart = false;
-    var spacing = 4;
-    var grid = [4,4];
+    var spacing = 10;
+    var grid = [8,8];
     var nodeCount = grid[0]*grid[1];
     var gridCoordinates = [];
     var svg;
-    var svgWidth = 1024;
-    var svgHeight = 400;
-    var margins={top:70,bottom:20,left:70,right:20};
-    var h=svgHeight-(margins.top+margins.bottom),w=svgWidth-(margins.left+margins.right);
+    var svgWidth = 500;
+    var svgHeight = 500;
+
+    var margins={top:50,bottom:0,left:50,right:0};
+    var h=svgHeight-margins.bottom,
+        w=svgWidth-margins.right;
     var nodes = [];
     var i = 0;
 
