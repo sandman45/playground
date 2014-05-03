@@ -12,26 +12,28 @@ playGroundApp.config(['$routeProvider',
             when('/index',{
                 templateUrl:'views/playground/main.html',
                 controller:'mainCtrl'
-            }).
-            when('/myCarousel',{
+            })
+            .when('/myCarousel',{
                 templateUrl:'views/playground/main.html',
                 controller:'mainCtrl'
-            }).
-            when('/playground/world', {
+            })
+            .when('/playground/world', {
                 templateUrl: 'views/playground/world.html',
                 controller: 'worldCtrl'
-            }).
-            when('/playground/d3', {
+            })
+            .when('/playground/d3', {
                 templateUrl: 'views/playground/d3.html',
                 controller: 'd3Ctrl'
             })
-            .
-            when('/playground/metals', {
+            .when('/playground/metals', {
                 templateUrl: 'views/playground/metals.html',
                 controller: 'metalsCtrl'
             })
-            .
-            otherwise({
+            .when('/playground/dotdot', {
+              templateUrl: 'views/playground/dotDot.html',
+              controller: 'dotDotCtrl'
+            })
+            .otherwise({
                 redirectTo: '/index'
             });
     }]);
