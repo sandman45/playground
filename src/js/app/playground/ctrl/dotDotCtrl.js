@@ -1,8 +1,8 @@
 /**
  * Created by matthew.sanders on 5/2/14.
  */
-controllers.controller('dotDotCtrl', ['$scope','element',
-  function ($scope,$el) {
+controllers.controller('dotDotCtrl', ['$scope',
+  function ($scope) {
     $scope.title = "Dot Dot!";
     $scope.startGame = start;
 //    $scope.showStart = false;
@@ -11,8 +11,8 @@ controllers.controller('dotDotCtrl', ['$scope','element',
     var nodeCount = grid[0]*grid[1];
     var gridCoordinates = [];
     var svg;
-    var svgWidth = $el[0].width;
-    var svgHeight = $el[0].height;
+    var svgWidth = 1024;
+    var svgHeight = 400;
     var margins={top:70,bottom:20,left:70,right:20};
     var h=svgHeight-(margins.top+margins.bottom),w=svgWidth-(margins.left+margins.right);
     var nodes = [];
