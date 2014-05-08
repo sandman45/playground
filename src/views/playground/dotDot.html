@@ -1,6 +1,38 @@
+<style>
+  .drag_line {
+    stroke: #999;
+    stroke-width: 5;
+    pointer-events: none;
+  }
+  .drag_line {
+    stroke: #999;
+    stroke-width: 5;
+    pointer-events: none;
+  }
+
+  .drag_line_hidden {
+    stroke: #999;
+    stroke-width: 0;
+    pointer-events: none;
+  }
+
+  .link {
+    stroke: #999;
+    stroke-width: 5;
+    cursor: crosshair;
+  }
+
+  .link_selected {
+    stroke: #ff7f0e;
+  }
+
+</style>
+
 <h2>{{title}}</h2>
   <div ng-show="showStart"></div>
 <button data-ng-click="startGame()">Start</button>
+<button data-ng-click="clearGame()">Reset</button>
+  <div id="players"></div>
   <section style="width: 500px;height: 500px;">
     <div id="dotDotContainer" style="background-color: steelblue">
 
