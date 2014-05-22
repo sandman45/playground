@@ -30,11 +30,12 @@
 
 <h2>{{title}}</h2>
   <div ng-show="showStart"></div>
-<button data-ng-click="startGame()">Start</button>
-<button data-ng-click="clearGame()">Reset</button>
+    Player 1: <input type="text" ng-model="player1.player" name="player1" required="true" ng-required="">
+    Player 2: <input type="text" ng-model="player2.player" name="player2" required="true" ng-required="">
+    <button data-ng-click="startGame()">Start</button>
+    <button data-ng-click="clearGame()">Reset</button>
   <div id="players"></div>
   <section style="width: 500px;height: 500px;">
     <div id="dotDotContainer" style="background-color: steelblue">
-
     </div>
   </section>

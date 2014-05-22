@@ -1,30 +1,30 @@
 /**
  * Created by matthew.sanders on 5/2/14.
  */
-controllers.controller('dotDotCtrl', ['$scope',
-  function ($scope) {
+controllers.controller('dotDotCtrl', ['$scope','$q',
+  function ($scope,$q) {
     $scope.title = "Dot Dot!";
     $scope.startGame = start;
     $scope.clearGame = reset;
 //    $scope.showStart = false;
 
     //-- player variables ---------------------
-    var players = [
-      {
-        i:0,
-        player:"Matt",
-        color:"orange",
-        score:0
-      },
-      {
-        i:1,
-        player:"Libby",
-        color:"purple",
-        score:0
-      }];
-    var currentTurnIndex=0;
+    $scope.player1 = {
+      i:0,
+      player:"",
+      color:"orange",
+      score:0
+    };
+    $scope.player2 = {
+      i:1,
+      player:"",
+      color:"purple",
+      score:0
+    };
+    $scope.players=[];
 
-    var current_turn = players[currentTurnIndex];
+    var currentTurnIndex=0;
+    var current_turn;
     //-- game variables -------------------------
     var spacing = 10;
     var grid = [8,8];
@@ -53,15 +53,11 @@ controllers.controller('dotDotCtrl', ['$scope',
       .on("tick", tick)
       .start();
 
-
     var mousedown_node = null;
     var mouseup_node = null;
     var mousedown_link = null;
     var selected_node = null;
     var selected_link = null;
-    // line displayed when dragging new nodes
-
-
 
     init();
 
@@ -79,28 +75,89 @@ controllers.controller('dotDotCtrl', ['$scope',
     function init() {
       createGridCoords();
       svg = d3.select('#dotDotContainer').append('svg').attr('height', h).attr('width', w).style('background','gray');
-
-      var playerCont = d3.select("#players").append('svg').attr('height', 25).attr('width', w).style('background','lightblue');
-      var text = playerCont.selectAll("text").data(players).enter().append("text");
-      var textLabel = text
-                       .attr("x", function(d) { return d.i*150; })
-                       .attr("y", function(d) { return 15; })
-                       .text( function (d) { return "" + d.player + ": ( "+ d.score+" )"; })
-                       .attr("font-family", "sans-serif")
-                       .attr("font-size", "12px")
-                       .attr("fill", "black");
-
-
-
     }
-    function finishTurn(){
+
+    /**
+     * boxValidator
+     * @param id
+     * @returns {promise|*|Function|promise}
+     */
+    function boxValidator(id){
+      var Q = $q.defer();
+      var allLines = d3.selectAll('line');
+      if(allLines[0].length>4){
+        var coord1 = 0;
+        var coord2 = 1;
+        var coord3 = 9;
+        var coord4 = 8;
+        var line1,line2,line3,line4;
+        for(var k=0;k<7;k++){
+          coord1 = 0 + (k*grid[0]);
+          coord2 = 1 + (k*grid[0]);
+          coord3 = 9 + (k*grid[0]);
+          coord4 = 8 + (k*grid[0]);
+          line1=null,line2=null,line3=null,line4=null;
+          for(var j=0;j<7;j++){
+            console.log("checking column: "+k+" row: "+j);
+            coord1 = coord1+j;
+            coord2 = coord2+j;
+            coord3 = coord3+j;
+            coord4 = coord4+j;
+            try{line1 = d3.select('#dots_'+coord1+'-'+'dots_'+coord2).attr('id');}catch(err){line1=null;}
+            try{line2 = d3.select('#dots_'+coord2+'-'+'dots_'+coord3).attr('id');}catch(err){line2=null;}
+            try{line3 = d3.select('#dots_'+coord4+'-'+'dots_'+coord3).attr('id');}catch(err){line3=null;}
+            try{line4 = d3.select('#dots_'+coord1+'-'+'dots_'+coord4).attr('id');}catch(err){line4=null;}
+            if(line1&&line2&&line3&&line4){
+//              Q.resolve(coord1);
+              createBox(coord1);
+            }
+          }
+        }
+      }else{
+        Q.reject("No Box created");
+      }
+      return Q.promise;
+    }
+
+
+    /**
+     * finishTurn
+     */
+    function finishTurn(lineID){
+
+      //check to see if a box needs to be created.
+      boxValidator(lineID).then(function(data){
+        console.log(data);
+
+      })
+      .catch(function(response){
+        console.log(response);
+      });
+
       currentTurnIndex++;
-      if(currentTurnIndex>players.length-1){
+      if(currentTurnIndex>$scope.players.length-1){
         currentTurnIndex=0;
       }
-      current_turn = players[currentTurnIndex];
+      current_turn = $scope.players[currentTurnIndex];
     }
+    /**
+     * start
+     */
     function start(){
+      $scope.players = [];
+      $scope.players.push($scope.player1);
+      $scope.players.push($scope.player2);
+      current_turn = $scope.players[currentTurnIndex];
+      var playerCont = d3.select("#players").append('svg').attr('height', 25).attr('width', w).style('background','lightblue');
+      var text = playerCont.selectAll("text").data($scope.players).enter().append("text");
+      var textLabel = text
+        .attr("x", function(d) { return d.i*150; })
+        .attr("y", function(d) { return 15; })
+        .text( function (d) { return "" + d.player + ": ( "+ d.score+" )"; })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "12px")
+        .attr("fill", "black");
+
       drag_line = svg.append("line")
         .attr("class", "drag_line")
         .attr("x1", 0)
@@ -131,6 +188,9 @@ controllers.controller('dotDotCtrl', ['$scope',
         }
       }, 50);
     }
+    /**
+     * reset
+     */
     function reset(){
       svg.selectAll("circle").remove();
       svg.selectAll("line").remove();
@@ -138,7 +198,7 @@ controllers.controller('dotDotCtrl', ['$scope',
       links = [];
       i = 0;
       currentTurnIndex = 0;
-      current_turn = players[currentTurnIndex];
+      current_turn = $scope.players[currentTurnIndex];
       force.start();
     }
     /**
@@ -151,14 +211,34 @@ controllers.controller('dotDotCtrl', ['$scope',
     function createDot(i,d,r1,r2){
       svg.append('svg:circle')
         .data([d])
-        .attr('id','#dots_'+i)
+        .attr('id','dots_'+i)
         .attr("r", r1)
         .transition()
         .ease(Math.sqrt)
         .attr("r", r2);
-
     }
 
+    /**
+     * createBox
+     */
+    function createBox(coord){
+      var xCoor = d3.select("#dots_"+coord).attr('cx');
+      var yCoor = d3.select("#dots_"+coord).attr('cy');
+      var data = {x:xCoor,y:yCoor,player:current_turn.player,color:current_turn.color};
+      console.log("create box for "+data.player);
+      svg.append("rect")
+        .attr("id",data.player+"_box")
+        .attr("class","my class")
+        .attr("fill",data.color)
+        .attr("x", xCoor)
+        .attr("y", yCoor)
+        .attr("width", 50)
+        .attr("height", 50);
+    }
+    /**
+     * dragLine
+     * @param node
+     */
     function dragLine(node) {
       if (!mousedown_node) return;
       drag_line
@@ -167,7 +247,11 @@ controllers.controller('dotDotCtrl', ['$scope',
         .attr("x2", d3.mouse(node)[0])
         .attr("y2", d3.mouse(node)[1]);
     }
-
+    /**
+     * valid
+     * @param node
+     * @returns {boolean}
+     */
     function valid(node){
       xDiff = Math.abs(mousedown_node.x-d3.select(node).attr('cx'));
       yDiff = Math.abs(mousedown_node.y-d3.select(node).attr('cy'));
@@ -178,20 +262,35 @@ controllers.controller('dotDotCtrl', ['$scope',
       return false;
     }
 
+    /**
+     * drawLine
+     * @param source
+     */
     function drawLine(source){
       console.log("draw line from x1,y1: "+mousedown_node.x+","+mousedown_node.y+" to x2,y2: "+d3.select(source).attr('cx')+","+d3.select(source).attr('cy'));
+      var id;
+      var id1 = parseFloat(mousedown_node.id.substr(5,mousedown_node.id.length));
+      var id2 = parseFloat(d3.select(source).attr('id').substr(5,d3.select(source).attr('id').length));
+      if(id1<id2){
+        id = mousedown_node.id+"-"+d3.select(source).attr('id');
+      }else{
+        id = d3.select(source).attr('id')+"-"+mousedown_node.id;
+      }
       svg.append("line")
         .attr("player",current_turn.player)
         .attr("class",current_turn.player)
+        .attr("id",id)
         .attr("stroke",current_turn.color)
         .attr("x1", mousedown_node.x)
         .attr("y1", mousedown_node.y)
         .attr("x2", d3.select(source).attr('cx'))
         .attr("y2", d3.select(source).attr('cy'));
+      finishTurn(id);
       mousedown_node=null;
-      finishTurn();
     }
-
+    /**
+     * layout
+     */
     function layout(){
       force.on('tick',function(){});
       svg.on('mousemove',function(){
@@ -209,7 +308,7 @@ controllers.controller('dotDotCtrl', ['$scope',
         })
         .on('mousedown',function(){
           var dot = this;
-          mousedown_node = {x:d3.select(this).attr('cx'),y:d3.select(this).attr('cy')};
+          mousedown_node = {x:d3.select(this).attr('cx'),y:d3.select(this).attr('cy'),id:d3.select(this).attr('id')};
           if (mousedown_node == selected_node) selected_node = null;
           else selected_node = mousedown_node;
           selected_link = null;
@@ -252,7 +351,9 @@ controllers.controller('dotDotCtrl', ['$scope',
           return yScale(gridCoordinates[d.index].y);
         });
     }
-
+    /**
+     * createGridCoords
+     */
     function createGridCoords(){
       for(var i=0;i<grid[0];i++){
         for(var j=0;j<grid[1];j++){
