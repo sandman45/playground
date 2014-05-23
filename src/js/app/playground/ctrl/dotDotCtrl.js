@@ -13,13 +13,15 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       i:0,
       player:"",
       color:"orange",
-      score:0
+      score:0,
+      classes:{active:true}
     };
     $scope.player2 = {
       i:1,
       player:"",
       color:"purple",
-      score:0
+      score:0,
+      classes:{active:false}
     };
     $scope.players=[];
 
@@ -115,10 +117,12 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
                 $scope.$apply();
                 scoringMatrix[k][j].id = "box"+coord1;
                 scoringMatrix[k][j].player = current_turn.player;
+                Q.resolve("Player Scores, created box.. take another turn");
               }
             }
           }
         }
+        Q.reject("No Box created");
       }else{
         Q.reject("No Box created");
       }
@@ -133,17 +137,20 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       //check to see if a box needs to be created.
       boxValidator(lineID).then(function(data){
         console.log(data);
-
       })
       .catch(function(response){
         console.log(response);
-      });
+          currentTurnIndex++;
+          if(currentTurnIndex>$scope.players.length-1){
+            currentTurnIndex=0;
+          }
+          current_turn = $scope.players[currentTurnIndex];
+          _.forEach($scope.players,function(player){
+            player.classes.active = false;
+          });
+          $scope.players[currentTurnIndex].classes.active = true;
 
-      currentTurnIndex++;
-      if(currentTurnIndex>$scope.players.length-1){
-        currentTurnIndex=0;
-      }
-      current_turn = $scope.players[currentTurnIndex];
+      });
     }
 
     /**
@@ -156,7 +163,6 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
           scoringMatrix[i].push({id:"",player:""});
         }
       }
-      console.log(JSON.stringify(scoringMatrix));
     }
 
     /**
@@ -168,15 +174,6 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       $scope.players.push($scope.player1);
       $scope.players.push($scope.player2);
       current_turn = $scope.players[currentTurnIndex];
-      var playerCont = d3.select("#players").append('svg').attr('height', 25).attr('width', w).style('background','lightblue');
-      var text = playerCont.selectAll("text").data($scope.players).enter().append("text");
-      var textLabel = text
-        .attr("x", function(d) { return d.i*150; })
-        .attr("y", function(d) { return 15; })
-        .text( function (d) { return "" + d.player + ": ( "+ d.score+" )"; })
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "12px")
-        .attr("fill", "black");
 
       drag_line = svg.append("line")
         .attr("class", "drag_line")
@@ -218,6 +215,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       svg.select("#players").remove();
       nodes = [];
       links = [];
+      scoringMatrix = [];
       i = 0;
       currentTurnIndex = 0;
       current_turn = $scope.players[currentTurnIndex];

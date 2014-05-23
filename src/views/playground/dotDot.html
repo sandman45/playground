@@ -25,6 +25,10 @@
   .link_selected {
     stroke: #ff7f0e;
   }
+  /*current active player highlight or whatever!*/
+  .active {
+    background-color: red;
+  }
 
 </style>
 
@@ -34,8 +38,10 @@
     Player 2: <input type="text" ng-model="player2.player" name="player2" required="true" ng-required="">
     <button data-ng-click="startGame()">Start</button>
     <button data-ng-click="clearGame()">Reset</button>
-  <div id="score" data-ng-repeat="player in players">[{{$index +1}}] {{player.player}} : {{player.score}}</div>
-  <div id="players"></div>
+  <div id="score" data-ng-repeat="player in players" data-ng-class="player.classes">
+    {{player.player}} : {{player.score}}
+  </div>
+
   <section style="width: 500px;height: 500px;">
     <div id="dotDotContainer" style="background-color: steelblue">
     </div>
