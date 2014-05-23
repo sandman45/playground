@@ -30,6 +30,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     var grid = [8,8];
     var nodeCount = grid[0]*grid[1];
     var gridCoordinates = [];
+    var scoringMatrix =[];
     var svg;
     var drag_line;
     var svgWidth = 500;
@@ -98,7 +99,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
           coord4 = 8 + (k*grid[0]);
           line1=null,line2=null,line3=null,line4=null;
           for(var j=0;j<7;j++){
-            console.log("checking column: "+k+" row: "+j);
+            //console.log("checking column: "+k+" row: "+j);
             coord1 = coord1+j;
             coord2 = coord2+j;
             coord3 = coord3+j;
@@ -108,8 +109,13 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
             try{line3 = d3.select('#dots_'+coord4+'-'+'dots_'+coord3).attr('id');}catch(err){line3=null;}
             try{line4 = d3.select('#dots_'+coord1+'-'+'dots_'+coord4).attr('id');}catch(err){line4=null;}
             if(line1&&line2&&line3&&line4){
-//              Q.resolve(coord1);
-              createBox(coord1);
+              if(scoringMatrix[k][j].id==""){
+                createBox(coord1);
+                $scope.players[currentTurnIndex].score++;
+                $scope.$apply();
+                scoringMatrix[k][j].id = "box"+coord1;
+                scoringMatrix[k][j].player = current_turn.player;
+              }
             }
           }
         }
@@ -118,7 +124,6 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       }
       return Q.promise;
     }
-
 
     /**
      * finishTurn
@@ -140,11 +145,26 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       }
       current_turn = $scope.players[currentTurnIndex];
     }
+
+    /**
+     * initScoringMatrix
+     */
+    function initScoringMatrix(){
+      for(var i=0;i<grid[0];i++){
+        scoringMatrix.push([]);
+        for(var j=0;j<grid[0];j++){
+          scoringMatrix[i].push({id:"",player:""});
+        }
+      }
+      console.log(JSON.stringify(scoringMatrix));
+    }
+
     /**
      * start
      */
     function start(){
       $scope.players = [];
+      initScoringMatrix();
       $scope.players.push($scope.player1);
       $scope.players.push($scope.player2);
       current_turn = $scope.players[currentTurnIndex];
@@ -194,6 +214,8 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     function reset(){
       svg.selectAll("circle").remove();
       svg.selectAll("line").remove();
+      svg.selectAll("rect").remove();
+      svg.select("#players").remove();
       nodes = [];
       links = [];
       i = 0;
@@ -222,8 +244,8 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
      * createBox
      */
     function createBox(coord){
-      var xCoor = d3.select("#dots_"+coord).attr('cx');
-      var yCoor = d3.select("#dots_"+coord).attr('cy');
+      var xCoor = parseFloat(d3.select("#dots_"+coord).attr('cx'))+2.5;
+      var yCoor = parseFloat(d3.select("#dots_"+coord).attr('cy'))+2.5;
       var data = {x:xCoor,y:yCoor,player:current_turn.player,color:current_turn.color};
       console.log("create box for "+data.player);
       svg.append("rect")
@@ -232,8 +254,12 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         .attr("fill",data.color)
         .attr("x", xCoor)
         .attr("y", yCoor)
-        .attr("width", 50)
-        .attr("height", 50);
+        .attr("width",50)
+        .attr("height",50)
+        .attr("opacity", 0)
+        .transition()
+        .ease(Math.sqrt)
+        .attr("opacity",1);
     }
     /**
      * dragLine
@@ -295,6 +321,10 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       force.on('tick',function(){});
       svg.on('mousemove',function(){
         dragLine(this);
+      });
+      svg.on('mouseup',function(){
+        drag_line
+          .attr("class", "drag_line_hidden");
       });
       svg.selectAll('circle')
         .attr('cursor','pointer')
