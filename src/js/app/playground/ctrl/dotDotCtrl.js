@@ -102,10 +102,13 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
           line1=null,line2=null,line3=null,line4=null;
           for(var j=0;j<7;j++){
             //console.log("checking column: "+k+" row: "+j);
-            coord1 = coord1+j;
-            coord2 = coord2+j;
-            coord3 = coord3+j;
-            coord4 = coord4+j;
+            if(j!=0){
+              coord1 = coord1+1;
+              coord2 = coord2+1;
+              coord3 = coord3+1;
+              coord4 = coord4+1;
+            }
+
             try{line1 = d3.select('#dots_'+coord1+'-'+'dots_'+coord2).attr('id');}catch(err){line1=null;}
             try{line2 = d3.select('#dots_'+coord2+'-'+'dots_'+coord3).attr('id');}catch(err){line2=null;}
             try{line3 = d3.select('#dots_'+coord4+'-'+'dots_'+coord3).attr('id');}catch(err){line3=null;}
