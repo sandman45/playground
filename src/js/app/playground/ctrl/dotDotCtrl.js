@@ -177,6 +177,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       $scope.players.push($scope.player1);
       $scope.players.push($scope.player2);
       current_turn = $scope.players[currentTurnIndex];
+      console.log(moment().format("DD-MMM-YYYY h:m:s a")+"--game start!");
 
       drag_line = svg.append("line")
         .attr("class", "drag_line")
