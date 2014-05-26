@@ -38,7 +38,7 @@ fs.readdirSync(__dirname + '/schedule').forEach(function(file){
 });
 
 
-var port = process.env.PORT || 8081;
+var port = process.env.PORT || 80;
 server.listen(port, function() {
     console.log('PORT: ', port, ' ENV: ', process.env.NODE_ENV);
 });
