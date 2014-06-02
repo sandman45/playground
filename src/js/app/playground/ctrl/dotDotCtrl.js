@@ -12,14 +12,14 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     $scope.player1 = {
       i:0,
       player:"",
-      color:"orange",
+      color:"",
       score:0,
       classes:{active:true}
     };
     $scope.player2 = {
       i:1,
       player:"",
-      color:"purple",
+      color:"",
       score:0,
       classes:{active:false}
     };
