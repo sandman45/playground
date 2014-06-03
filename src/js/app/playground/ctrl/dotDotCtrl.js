@@ -35,8 +35,8 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     var scoringMatrix =[];
     var svg;
     var drag_line;
-    var svgWidth = 400;
-    var svgHeight = 400;
+    var svgWidth = 600;
+    var svgHeight = 600;
 
     var margins={top:50,bottom:0,left:50,right:0};
     var h=svgHeight-margins.bottom,
