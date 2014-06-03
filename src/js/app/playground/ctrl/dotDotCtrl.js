@@ -28,6 +28,9 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     var currentTurnIndex=0;
     var current_turn;
     //-- game variables -------------------------
+    var radius = 10;
+    var radiusOver = 12;
+    var lineThickness = 5;
     var spacing = 10;
     var grid = [8,8];
     var nodeCount = grid[0]*grid[1];
@@ -135,7 +138,6 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
      * finishTurn
      */
     function finishTurn(lineID){
-
       //check to see if a box needs to be created.
       boxValidator(lineID).then(function(data){
         console.log(data);
@@ -192,7 +194,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         };
 
         if(i<nodeCount){
-          createDot(i,d,1e-6,5);
+          createDot(i,d,1e-6,radius);
           nodes.push(d)
           i++;
         }else{
@@ -257,7 +259,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       var validY2 = d3.select('#dots_1').attr('cy');
       var lengthX = (validX2-validX1)+5;
       var lengthY = Math.abs(validY1-validY2)+5;
-      var d = {sort:1};
+      var d = {sort:5};
       svg.append("rect")
         .data([d])
         .attr("id",data.player+"_box")
@@ -265,8 +267,8 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         .attr("fill",data.color)
         .attr("x", xCoor)
         .attr("y", yCoor)
-        .attr("width",lengthX-10)
-        .attr("height",lengthY-10)
+        .attr("width",lengthX-9)
+        .attr("height",lengthY-9)
         .attr("opacity", 0)
         .transition()
         .ease(Math.sqrt)
@@ -326,6 +328,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         .attr("class",current_turn.player + " sort")
         .attr("id",id)
         .attr("stroke",current_turn.color)
+        .attr("stroke-width",lineThickness)
         .attr("x1", mousedown_node.x)
         .attr("y1", mousedown_node.y)
         .attr("x2", d3.select(source).attr('cx'))
@@ -350,11 +353,11 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         .attr('cursor','pointer')
         .on('mouseover',function(){
           d3.select(this).style('opacity',.5);
-          d3.select(this).attr('r',7);
+          d3.select(this).attr('r',radiusOver);
         })
         .on('mouseout',function(){
           d3.select(this).style('opacity',1);
-          d3.select(this).attr('r',5);
+          d3.select(this).attr('r',radius);
         })
         .on('click',function(){
           if(!drawCheck){
@@ -401,6 +404,9 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         });
     }
 
+    /**
+     * sortElements
+     */
     function sortElements(){
       var dots = d3.selectAll('.sort');
       dots.sort(function(a,b){
