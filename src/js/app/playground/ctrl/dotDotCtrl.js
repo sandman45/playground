@@ -35,8 +35,8 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     var scoringMatrix =[];
     var svg;
     var drag_line;
-    var svgWidth = 1025;
-    var svgHeight = 768;
+    var svgWidth = 400;
+    var svgHeight = 400;
 
     var margins={top:50,bottom:0,left:50,right:0};
     var h=svgHeight-margins.bottom,
@@ -232,8 +232,10 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
      * @param r - radius of dot
      */
     function createDot(i,d,r1,r2){
+      d['sort'] = 0;
       svg.append('svg:circle')
         .data([d])
+        .attr('class','dot sort')
         .attr('id','dots_'+i)
         .attr("r", r1)
         .transition()
@@ -255,9 +257,11 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       var validY2 = d3.select('#dots_1').attr('cy');
       var lengthX = (validX2-validX1)+5;
       var lengthY = Math.abs(validY1-validY2)+5;
+      var d = {sort:1};
       svg.append("rect")
+        .data([d])
         .attr("id",data.player+"_box")
-        .attr("class","my class")
+        .attr("class","BOX sort")
         .attr("fill",data.color)
         .attr("x", xCoor)
         .attr("y", yCoor)
@@ -315,9 +319,11 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       }else{
         id = d3.select(source).attr('id')+"-"+mousedown_node.id;
       }
+      var d = {sort:2};
       svg.append("line")
+        .data([d])
         .attr("player",current_turn.player)
-        .attr("class",current_turn.player)
+        .attr("class",current_turn.player + " sort")
         .attr("id",id)
         .attr("stroke",current_turn.color)
         .attr("x1", mousedown_node.x)
@@ -326,6 +332,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         .attr("y2", d3.select(source).attr('cy'));
       finishTurn(id);
       mousedown_node=null;
+      sortElements();
     }
     /**
      * layout
@@ -393,6 +400,16 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
           return yScale(gridCoordinates[d.index].y);
         });
     }
+
+    function sortElements(){
+      var dots = d3.selectAll('.sort');
+      dots.sort(function(a,b){
+        console.log(b.sort - a.sort);
+        return b.sort - a.sort;
+
+      });
+    }
+
     /**
      * createGridCoords
      */
