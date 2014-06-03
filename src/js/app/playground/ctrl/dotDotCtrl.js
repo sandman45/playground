@@ -153,7 +153,8 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
             player.classes.active = false;
           });
           $scope.players[currentTurnIndex].classes.active = true;
-
+          $scope.players[currentTurnIndex].classes.color = $scope.players[currentTurnIndex].color;
+          d3.select('.active').style('background-color',$scope.players[currentTurnIndex].classes.color);
       });
     }
 
