@@ -35,8 +35,8 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     var scoringMatrix =[];
     var svg;
     var drag_line;
-    var svgWidth = 500;
-    var svgHeight = 500;
+    var svgWidth = 1025;
+    var svgHeight = 768;
 
     var margins={top:50,bottom:0,left:50,right:0};
     var h=svgHeight-margins.bottom,
@@ -57,10 +57,9 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       .start();
 
     var mousedown_node = null;
-    var mouseup_node = null;
-    var mousedown_link = null;
     var selected_node = null;
     var selected_link = null;
+    var drawCheck = false;
 
     init();
 
@@ -246,18 +245,24 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
      * createBox
      */
     function createBox(coord){
-      var xCoor = parseFloat(d3.select("#dots_"+coord).attr('cx'))+2.5;
-      var yCoor = parseFloat(d3.select("#dots_"+coord).attr('cy'))+2.5;
+      var xCoor = parseFloat(d3.select("#dots_"+coord).attr('cx'))+2;
+      var yCoor = parseFloat(d3.select("#dots_"+coord).attr('cy'))+2;
       var data = {x:xCoor,y:yCoor,player:current_turn.player,color:current_turn.color};
       console.log("create box for "+data.player);
+      var validX1 = d3.select('#dots_0').attr('cx');
+      var validX2 = d3.select('#dots_8').attr('cx');
+      var validY1 = d3.select('#dots_0').attr('cy');
+      var validY2 = d3.select('#dots_1').attr('cy');
+      var lengthX = (validX2-validX1)+5;
+      var lengthY = Math.abs(validY1-validY2)+5;
       svg.append("rect")
         .attr("id",data.player+"_box")
         .attr("class","my class")
         .attr("fill",data.color)
         .attr("x", xCoor)
         .attr("y", yCoor)
-        .attr("width",50)
-        .attr("height",50)
+        .attr("width",lengthX-10)
+        .attr("height",lengthY-10)
         .attr("opacity", 0)
         .transition()
         .ease(Math.sqrt)
@@ -281,10 +286,16 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
      * @returns {boolean}
      */
     function valid(node){
-      xDiff = Math.abs(mousedown_node.x-d3.select(node).attr('cx'));
-      yDiff = Math.abs(mousedown_node.y-d3.select(node).attr('cy'));
+      var xDiff = Math.abs(mousedown_node.x-d3.select(node).attr('cx'));
+      var yDiff = Math.abs(mousedown_node.y-d3.select(node).attr('cy'));
+      var validX1 = d3.select('#dots_0').attr('cx');
+      var validX2 = d3.select('#dots_8').attr('cx');
+      var validY1 = d3.select('#dots_0').attr('cy');
+      var validY2 = d3.select('#dots_1').attr('cy');
+      var lengthY = Math.abs(validY1-validY2);
+      var lengthX = (validX2-validX1)+5;
       console.log('xdiff: '+xDiff+',ydiff:'+yDiff);
-      if((xDiff<60&&yDiff<1)||(xDiff<1&&yDiff<60)){
+      if((xDiff<lengthX&&yDiff<1)||(xDiff<1&&yDiff<lengthX)||(xDiff<1&&yDiff<=lengthY)||(xDiff<=lengthY&&yDiff<1)){//60
         return true;
       }
       return false;
@@ -338,34 +349,33 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
           d3.select(this).style('opacity',1);
           d3.select(this).attr('r',5);
         })
-        .on('mousedown',function(){
-          var dot = this;
-          mousedown_node = {x:d3.select(this).attr('cx'),y:d3.select(this).attr('cy'),id:d3.select(this).attr('id')};
-          if (mousedown_node == selected_node) selected_node = null;
-          else selected_node = mousedown_node;
-          selected_link = null;
-
-          console.log('node x: '+mousedown_node.x + ", node y: "+mousedown_node.y);
-          // reposition drag line
-          drag_line
-            .attr("class", "link")
-            .attr("x1", mousedown_node.x)
-            .attr("y1", mousedown_node.y)
-            .attr("x2", mousedown_node.x)
-            .attr("y2", mousedown_node.y);
-        })
-        .on("mouseup",function() {
-          if(valid(this)){
-            drawLine(this);
-            drag_line
-              .attr("class", "drag_line_hidden");
-          }else{
-            drag_line
-              .attr("class", "drag_line_hidden");
-          }
-        })
         .on('click',function(){
-
+          if(!drawCheck){
+            drawCheck = true;
+            var dot = this;
+            mousedown_node = {x:d3.select(this).attr('cx'),y:d3.select(this).attr('cy'),id:d3.select(this).attr('id')};
+            if (mousedown_node == selected_node) selected_node = null;
+            else selected_node = mousedown_node;
+            selected_link = null;
+            console.log('node x: '+mousedown_node.x + ", node y: "+mousedown_node.y);
+            // reposition drag line
+            drag_line
+              .attr("class", "link")
+              .attr("x1", mousedown_node.x)
+              .attr("y1", mousedown_node.y)
+              .attr("x2", mousedown_node.x)
+              .attr("y2", mousedown_node.y);
+          }else{
+            drawCheck = false;
+            if(valid(this)){
+              drawLine(this);
+              drag_line
+                .attr("class", "drag_line_hidden");
+            }else{
+              drag_line
+                .attr("class", "drag_line_hidden");
+            }
+          }
         })
         .attr("cx", function(d,i) {
           return d.x;
