@@ -347,8 +347,8 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         dragLine(this);
       });
       svg.on('mouseup',function(){
-        drag_line
-          .attr("class", "drag_line_hidden");
+//        drag_line
+//          .attr("class", "drag_line_hidden");
       });
       svg.selectAll('circle')
         .attr('cursor','pointer')
@@ -363,7 +363,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         .on('click',function(){
           if(!drawCheck){
             drawCheck = true;
-            var dot = this;
+//            var dot = this;
             mousedown_node = {x:d3.select(this).attr('cx'),y:d3.select(this).attr('cy'),id:d3.select(this).attr('id')};
             if (mousedown_node == selected_node) selected_node = null;
             else selected_node = mousedown_node;
@@ -377,14 +377,21 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
               .attr("x2", mousedown_node.x)
               .attr("y2", mousedown_node.y);
           }else{
-            drawCheck = false;
-            if(valid(this)){
-              drawLine(this);
+            var node_check = {x:d3.select(this).attr('cx'),y:d3.select(this).attr('cy'),id:d3.select(this).attr('id')};
+            if(mousedown_node.id == node_check.id){
+              //do nothing..
               drag_line
-                .attr("class", "drag_line_hidden");
+                .attr("class", "link");
             }else{
-              drag_line
-                .attr("class", "drag_line_hidden");
+              drawCheck = false;
+              if(valid(this)){
+                drawLine(this);
+                drag_line
+                  .attr("class", "drag_line_hidden");
+              }else{
+                drag_line
+                  .attr("class", "drag_line_hidden");
+              }
             }
           }
         })
