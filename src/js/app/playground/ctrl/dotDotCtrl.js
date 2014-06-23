@@ -6,7 +6,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     $scope.title = "Dot Dot!";
     $scope.startGame = start;
     $scope.clearGame = reset;
-//    $scope.showStart = false;
+    $scope.showStart = true;
 
     //-- player variables ---------------------
     $scope.player1 = {
@@ -434,4 +434,29 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         }
       }
     }
+
+    //-------------------------Socket IO ---------------------------//
+    var socket = io.connect();
+
+$scope.submitUserSettings = function(){
+
+  socket.emit('gameCommand',$scope.player1);
+  socket.on('gameCommand',function(command){
+    console.log(command);
+  });
+  socket.on('news',function(news){
+    console.log(news);
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
   }]);

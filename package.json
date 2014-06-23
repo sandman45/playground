@@ -21,6 +21,7 @@
     "node-schedule": "^0.1.13",
     "q": "~0.9.7",
     "request": "^2.34.0",
+    "socket.io": "^0.9.17",
     "underscore": "~1.5.2",
     "xml2js": "^0.4.2"
   }
