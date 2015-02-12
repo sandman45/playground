@@ -34,6 +34,10 @@ playGroundApp.config(['$routeProvider',
               templateUrl: 'views/playground/dotDot.html',
               controller: 'dotDotCtrl'
             })
+            .when('/playground/paleo', {
+              templateUrl: 'views/playground/paleo-main.html',
+              controller: 'paleoCtrl'
+            })
             .otherwise({
                 redirectTo: '/index'
             });

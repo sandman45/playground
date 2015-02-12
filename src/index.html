@@ -36,15 +36,16 @@
                         <li><a href="#about">About</a></li>
                         <li><a href="#contact">Contact</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Applications<b class="caret"></b></a>
                             <ul class="dropdown-menu">
+                                <li class="dropdown-header">Playground</li>
+                                <li class="divider"></li>
                                 <li><a href="#/playground/d3">D3</a></li>
                                 <li><a href="#/playground/metals">Metals Charts</a></li>
                                 <li><a href="#/playground/dotdot">Dot Dot!</a></li>
                                 <li class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
+                                <li class="dropdown-header">Paleo</li>
+                                <li><a href="#/playground/paleo">Diet Chart</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -59,17 +60,6 @@
     <div ng-view></div>
 
     <hr class="featurette-divider">
-
-   <!---->
-    <!--<hr class="featurette-divider">-->
-
-
-    <!--<hr class="featurette-divider">-->
-
-    <!--<hr class="featurette-divider">-->
-
-    <!--&lt;!&ndash; /END THE FEATURETTES &ndash;&gt;-->
-
 
     <!-- FOOTER -->
     <footer>
@@ -111,11 +101,18 @@
 <script src="js/app/playground/ctrl/worldCtrl.js"></script>
 <script src="js/app/playground/ctrl/metalsCtrl.js"></script>
 <script src="js/app/playground/ctrl/dotDotCtrl.js"></script>
+<script src="js/app/playground/ctrl/paleoCtrl.js"></script>
 
 <!-- DIRECTIVES-->
 <script src="js/app/playground/directive/d3BubbleTesting.js"></script>
 <script src="js/app/playground/directive/d3StackedBar.js"></script>
+<script src="js/app/playground/directive/d3MultiLine.js"></script>
+<script src="js/app/playground/directive/resizable.js"></script>
+
+
+
 <script src="lib/angular-bootstrap-colorpicker.js"></script>
+
 
 </body>
 </html>

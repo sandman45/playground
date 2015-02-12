@@ -1,29 +1,37 @@
 /**
  * Created by matthew.sanders on 5/2/14.
  */
-controllers.controller('dotDotCtrl', ['$scope','$q',
-  function ($scope,$q) {
+controllers.controller('dotDotCtrl', ['$scope','$q','$window',
+  function ($scope,$q,$window) {
     $scope.title = "Dot Dot!";
     $scope.startGame = start;
     $scope.clearGame = reset;
     $scope.showStart = true;
 
+    //-- style ----------------------
+    $scope.style1 = {'background-color':'blue','height':'25px','width':'25px'};
+    $scope.style2 = {'background-color':'red','height':'25px','width':'25px'};
     //-- player variables ---------------------
     $scope.player1 = {
       i:0,
       player:"",
-      color:"",
+      color:"blue",
       score:0,
       classes:{active:true}
     };
     $scope.player2 = {
       i:1,
       player:"",
-      color:"",
+      color:"red",
       score:0,
       classes:{active:false}
     };
     $scope.players=[];
+
+    $scope.$watch('$window.innerWidth',function(data){
+      console.log($window.innerWidth);
+    });
+
 
     var currentTurnIndex=0;
     var current_turn;
@@ -38,10 +46,10 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     var scoringMatrix =[];
     var svg;
     var drag_line;
-    var svgWidth = 600;
-    var svgHeight = 600;
+    var svgWidth = d3.select('#dotDotSection').width||$window.innerWidth||600;
+    var svgHeight = d3.select('#dotDotSection').height||$window.innerHeight||600;
 
-    var margins={top:50,bottom:0,left:50,right:0};
+    var margins={top:10,bottom:10,left:50,right:50};
     var h=svgHeight-margins.bottom,
         w=svgWidth-margins.right;
     var nodes = [];
@@ -435,28 +443,28 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       }
     }
 
+    // -------------------------- Watches --------------------------//
+    $scope.$watch('player1.color',function(e){
+//      console.log("player1 color changes: " + e);
+      if(e!="")$scope.style1['background-color'] = e;
+
+    });
+    $scope.$watch('player2.color',function(e){
+//      console.log("player2 color changes: " + e);
+      if(e!="")$scope.style2['background-color'] = e;
+    });
+
+
     //-------------------------Socket IO ---------------------------//
     var socket = io.connect();
 
-$scope.submitUserSettings = function(){
-
-  socket.emit('gameCommand',$scope.player1);
-  socket.on('gameCommand',function(command){
-    console.log(command);
-  });
-  socket.on('news',function(news){
-    console.log(news);
-  });
-};
-
-
-
-
-
-
-
-
-
-
-
+    $scope.submitUserSettings = function(){
+      socket.emit('gameCommand',$scope.player1);
+      socket.on('gameCommand',function(command){
+        console.log(command);
+      });
+      socket.on('news',function(news){
+        console.log(news);
+      });
+    };
   }]);

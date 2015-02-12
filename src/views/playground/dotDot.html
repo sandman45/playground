@@ -4,6 +4,7 @@
     stroke-width: 5;
     pointer-events: none;
   }
+
   .drag_line {
     stroke: #999;
     stroke-width: 5;
@@ -25,61 +26,82 @@
   .link_selected {
     stroke: #ff7f0e;
   }
+
   /*current active player highlight or whatever!*/
   .active {
     background-color: lightsteelblue;
     width: 600px;
   }
-  .playerContainer{
-    width:100%;
-    height:100px;
-    background-color:lightslategray;
+
+  .playerContainer {
+    width: 100%;
+    height: 100px;
+    background-color: lightslategray;
     box-shadow: 10px 10px 5px #888888;
   }
-  .player1{
+
+  .player1 {
     float: left;
-
-    width:300px;
-    height:100px;
-    /*background-color:lightslategray;*/
-    /*box-shadow: 10px 10px 5px #888888;*/
-  }
-  .player2{
-    margin-left: 300px;
-    width:300px;
-    height:100px;
-    /*background-color:lightslategray;*/
+    width: 300px;
+    /*height: 200px;*/
     /*box-shadow: 10px 10px 5px #888888;*/
   }
 
-  .playerForm{
+  .player2 {
+    margin-left: 320px;
+    width: 300px;
+    /*height: 200px;*/
+    /*box-shadow: 10px 10px 5px #888888;*/
+  }
+
+  .playerForm {
     /*float: left;*/
+  }
+  #gameControls{
+    float: left;
   }
 
 </style>
 
 <h2>{{title}}</h2>
-  <div class="playerContainer">
-    <div class="player1">
-      <div>Player 1: <input class="playerForm" type="text" ng-model="player1.player" name="player1" required="true" ng-required=""></div>
-      <div>Color:  <input colorpicker="hex" type="text" ng-model="player1.color" /></div>
+<div class="playerContainer">
+  <div class="player1">
+    <div>Player 1:
+      <input class="playerForm" type="text" ng-model="player1.player" name="player1" required="true" ng-required="">
     </div>
-    <div  class="player2">
-      <div>Player 2: <input class="playerForm" type="text" ng-model="player2.player" name="player2" required="true" ng-required=""></div>
-      <div>Color:  <input colorpicker="hex" type="text" ng-model="player2.color" /></div>
+    <div>Color:
+      <div colorpicker ng-model="player1.color">
+        <div id="player1Swatch" ng-style="style1">
+        </div>
+      </div>
     </div>
   </div>
+  <div style="background-color: white; width: 10px;"></div>
+  <div class="player2">
+    <div>Player 2:
+      <input class="playerForm" type="text" ng-model="player2.player" name="player2" required="true" ng-required="">
+      </div>
+    <div>Color:
+      <div colorpicker ng-model="player2.color" ng-style="style2">
+        <div id="player2Swatch">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+  <div id="gameControls">
     <button data-ng-click="submitUserSettings()">Submit</button>
     <button data-ng-click="startGame()">Start</button>
     <button data-ng-click="clearGame()">Reset</button>
+  </div>
 
   <div id="score" data-ng-repeat="player in players" data-ng-class="player.classes">
     {{player.player}} : {{player.score}}
   </div>
 
-  <section style="width: 500px;height: 500px;">
-    <div id="dotDotContainer" style="background-color: steelblue">
+  <section id="dotDotSection" style="width: 100%;height: 100%;">
+    <div id="dotDotContainer">
     </div>
   </section>
 
