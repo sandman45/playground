@@ -31,12 +31,18 @@ playGroundApp.config(['$routeProvider',
                 controller: 'metalsCtrl'
             })
             .when('/playground/dotdot', {
-              templateUrl: 'views/playground/dotDot.html',
-              controller: 'dotDotCtrl'
+                templateUrl: 'views/playground/dotDot.html',
+                controller: 'dotDotCtrl'
             })
             .when('/playground/paleo', {
-              templateUrl: 'views/playground/paleo-main.html',
-              controller: 'paleoCtrl'
+                templateUrl: 'views/playground/paleo-main.html',
+                controller: 'paleoCtrl'
+            })
+            .when('/about', {
+                templateUrl: 'views/about.html'
+            })
+            .when('/contact', {
+                templateUrl: 'views/contact.html'
             })
             .otherwise({
                 redirectTo: '/index'
