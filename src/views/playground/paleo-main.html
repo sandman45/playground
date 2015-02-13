@@ -4,32 +4,10 @@
     <!--<button type="button" class="btn btn-default btn-success" data-ng-click="button.func(button)">{{button.label}}</button>-->
   <!--</div>-->
 <!--</section>-->
-<div id="container" resizable>
-  <div d3-multi-line
-       id="lineChartWeight"
-       width="fluidWidth_container"
-       height="500"
-       data="cOptions.data"
-       tt="true"
-       date-format="'MMM DD'"
-       data-format="cOptions.dataFormat"
-       show-points="true"
-       line-opacity="cOptions.lineOpacity"
-       line-width="cOptions.lineWidth"
-       point-opacity="cOptions.pointOpacity"
-       point-radius="cOptions.pointRadius"
-       tt-pos="cOptions.tooltipTop"
-       show-x-axis="true"
-       show-y-axis="true"
-       time="cOptions.time"
-       mouse-over="cOptions.mouseOver"
-       mouse-out="cOptions.mouseOut"
-       color-high="cOptions.colorLow"
-       color-low="cOptions.colorHigh"
-       margin-bottom="50"
-       margin-left="50"
-       margin-right="50"
-       margin-top="50"
-       class="card drop-shadow"
-       style="position: relative;"></div>
-</div>
+<nvd3 options="options" data="data"></nvd3>
+<nvd3 options="options2" data="data2"></nvd3>
+<nvd3 options="options3" data="data3"></nvd3>
+
+
+
+

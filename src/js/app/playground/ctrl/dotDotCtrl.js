@@ -49,7 +49,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
     var svgWidth = d3.select('#dotDotSection').width||$window.innerWidth||600;
     var svgHeight = d3.select('#dotDotSection').height||$window.innerHeight||600;
 
-    var margins={top:10,bottom:10,left:50,right:50};
+    var margins={top:10,bottom:10,left:50,right:100};
     var h=svgHeight-margins.bottom,
         w=svgWidth-margins.right;
     var nodes = [];
@@ -461,10 +461,10 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
     $scope.submitUserSettings = function(){
       socket.emit('gameCommand',$scope.player1);
       socket.on('gameCommand',function(command){
-        console.log(command);
+        //console.log(command);
       });
       socket.on('news',function(news){
-        console.log(news);
+        //console.log(news);
       });
     };
   }]);

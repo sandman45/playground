@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
     <link href="lib/carousel.css" rel="stylesheet">
     <link href="lib/colorpicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="bower_components/nvd3/nv.d3.css">
     <title>Play Ground</title>
     <style type="text/css"></style>
     <style id="holderjs-style" type="text/css"></style>
@@ -73,16 +74,20 @@
 <script src="http://localhost:8081/socket.io/socket.io.js"></script>
 
 <!-- LIBRARIES --->
-<script src="lib/angular/angular.min.js"></script>
-<script src="lib/angular/angular-route.min.js"></script>
+
+<!-- nvd3 (angular d3 libraries) -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/nvd3/nv.d3.js"></script> <!-- or use another assembly -->
+<script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+
+
+
 <script src="lib/jquery-2.1.0.min.js"></script>
-<script src="lib/d3/d3.v3.min.js"></script>
-<script src="lib/underscore/underscore-min.js"></script>
-<script src="lib/moment/moment.js"></script>
+<script src="bower_components/underscore/underscore-min.js"></script>
+<script src="bower_components/moment/moment.js"></script>
 
-<!--<script src="lib/jscolor/jscolor.js"></script>-->
-
-<!--<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>-->
 <script src="lib/bootstrap/js/bootstrap.min.js"></script>
 <!--physics and 3D engine Libraries-->
 
@@ -108,8 +113,6 @@
 <script src="js/app/playground/directive/d3StackedBar.js"></script>
 <script src="js/app/playground/directive/d3MultiLine.js"></script>
 <script src="js/app/playground/directive/resizable.js"></script>
-
-
 
 <script src="lib/angular-bootstrap-colorpicker.js"></script>
 

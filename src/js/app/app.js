@@ -4,7 +4,8 @@
 var playGroundApp = angular.module('playGroundApp', [
     'ngRoute',
     'controllers',
-    'colorpicker.module'
+    'colorpicker.module',
+    'nvd3'
 ]);
 
 playGroundApp.config(['$routeProvider',
