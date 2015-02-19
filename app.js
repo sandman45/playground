@@ -1,12 +1,13 @@
 /**
  * Created by matthew.sanders on 3/13/14.
  */
+var config = require('config');
 var fs = require('fs');
 var http = require('http');
 var express = require('express');
 var schedule = require('node-schedule');
 var socket;
-var users = [];
+
 
 /**
  * allowCrossDomain
@@ -23,6 +24,7 @@ var allowCrossDomain = function(req,res,next){
 
 var app = express();
 var server = http.createServer(app);
+var store = new express.session.MemoryStore;
 var io = require('socket.io').listen(server);
     io.on('connection', function (socket) {
       console.log('a user connected');
@@ -49,8 +51,18 @@ var io = require('socket.io').listen(server);
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.multipart());
+app.use(express.cookieParser());
+app.use(express.session({secret:'secret', cookie:{maxAge:config.session.maxAge}, store:store})); //TODO: store sessions in couch
 app.use(express.static('src'));
 app.use(allowCrossDomain);
+app.use(app.router);
+
+app.options('/*', function(req, res){
+  res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'content-Type,x-requested-with');
+  res.send(200);
+});
 
 
 // Load all other routes
