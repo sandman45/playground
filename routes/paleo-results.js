@@ -9,7 +9,7 @@ module.exports = function(app){
   /**
    * paleo-results
    */
-  app.get('/paleo-results/', function(req,res,next){
+  app.get('/playground/paleo-results/', function(req,res,next){
     var id = "";
     if(req.params.id){
       id = req.params.id;
@@ -26,7 +26,7 @@ module.exports = function(app){
    * this will create a new document in couch.
    * if the id is already in couch it will update it
    */
-  app.post( '/createPaleoResult', function( req, res, next ){
+  app.post( '/playground/createPaleoResult', function( req, res, next ){
     console.log( 'createPaleoResult' );
     var id = null;
     if(req.body.id){

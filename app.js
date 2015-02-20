@@ -3,9 +3,13 @@
  */
 var config = require('config');
 var fs = require('fs');
+var _ = require('underscore');
 var http = require('http');
 var express = require('express');
 var schedule = require('node-schedule');
+var session = require('express-session');
+    connect = require('connect');
+    ConnectCouchDB = require('connect-couchdb')(session);
 var socket;
 
 
@@ -24,7 +28,18 @@ var allowCrossDomain = function(req,res,next){
 
 var app = express();
 var server = http.createServer(app);
-var store = new express.session.MemoryStore;
+
+var store = new ConnectCouchDB({
+  //Name of Database for session storage
+  name: 'sessions',
+  //How often  expired sessions should be cleaned up
+  host:config.couch.url
+  //reapInterval: config.session.maxAge,
+  //compactInterval:config.session.compactInterval,
+  //setThrottle: config.session.throttle
+});
+
+
 var io = require('socket.io').listen(server);
     io.on('connection', function (socket) {
       console.log('a user connected');
@@ -52,7 +67,11 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.multipart());
 app.use(express.cookieParser());
-app.use(express.session({secret:'secret', cookie:{maxAge:config.session.maxAge}, store:store})); //TODO: store sessions in couch
+app.use(session({
+  secret:'myAmazingSecret',
+  store:store,
+  cookie:{maxAge:config.session.cookie.maxAge}
+})); //TODO: store sessions in couch
 app.use(express.static('src'));
 app.use(allowCrossDomain);
 app.use(app.router);
@@ -62,6 +81,11 @@ app.options('/*', function(req, res){
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'content-Type,x-requested-with');
   res.send(200);
+});
+
+//-- require all routes in kobol directory to run security check
+app.all("/playground/*", securityCheck, function(req, res, next){
+  next();
 });
 
 
@@ -81,3 +105,34 @@ var env = process.env.NODE_ENV || 'Localdev';
 server.listen(port, function() {
   console.log('PORT: ', port, ' ENV: ', env);
 });
+
+
+
+//---functions------
+/**
+ * securityCheck
+ * @param req
+ * @param res
+ * @param next
+ */
+function securityCheck(req, res, next) {
+  store.get(req.session.id, function (err, session) {
+    if (err) {
+      res.send(500, {message: err});
+    }
+    if (session) {
+      if (_.has(session, 'username')) {
+        if (session.username == req.session.username) {
+          next();
+        }
+      } else {
+        console.log('Forbidden');
+        res.send(403, {message: 'Forbidden'});
+      }
+    }
+    else {
+      console.log('Forbidden');
+      res.send(403, {message: 'Forbidden'});
+    }
+  });
+}

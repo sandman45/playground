@@ -1,10 +1,15 @@
 {
  "session" : {
-   "maxAge" : 1209600000 //2 weeks
+   "maxAge" : 1209600000, //2 weeks
+   "compactInterval" : 300000,
+   "throttle" : 60000,
+   "cookie":{
+     "maxAge" : 1209600000
+   }
  },
   "port" : 8081,
   "couch" : {
-    "url" : "http://107.170.178.211",
+    "url" : "107.170.178.211",
     "port" : 5984
   }
 }

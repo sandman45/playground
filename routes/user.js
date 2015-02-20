@@ -7,14 +7,28 @@ var couchService = new CouchService('users');
 
 module.exports = function(app){
   app.post('/login', function(req,res,next){
-
+    if(req.body.email && req.body.email.length>0){
+      couchService.get(req.body.email).then(function(data){
+        console.log(data);
+        if(data.password === req.body.password){
+          //set session
+          req.session.username = req.body.email;
+          res.send(200, "Login Successfull");
+        }else{
+          res.send(401, "Username or Password incorrect");
+        }
+      })
+      .fail(function(err){
+        console.log(err);
+      });
+    }
   });
 
   app.get('/logout', function(req,res,next){
 
   });
 
-  app.get('/user/:id', function(req,res,next){
+  app.get('/playground/user/:id', function(req,res,next){
     couchService.get(req.params.id).then(function(d){
       res.send(200, d);
     })

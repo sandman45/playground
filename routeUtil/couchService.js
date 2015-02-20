@@ -2,7 +2,7 @@
  * Created by matthew.sanders on 2/19/15.
  */
 var couchConfig = require('config').couch;
-var nano = require('nano')(couchConfig.url+":"+couchConfig.port);
+var nano = require('nano')("http://"+couchConfig.url+":"+couchConfig.port);
 var q = require('q');
 var _ = require('underscore');
 
