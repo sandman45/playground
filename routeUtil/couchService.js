@@ -62,7 +62,20 @@ var CouchService = (function(){
       this.db.get(id, this.responsePromise(deferred, 'get'));
     }
     else {
-      this.db.list(this.responsePromise(deferred, 'getAll'));
+      //this.db.list(this.responsePromise(deferred, 'getAll'));
+      var data = [];
+      var params = {
+        include_docs:true,
+        descending:true
+      };
+      this.db.list(params ,function(err, body){
+        if(!err){
+          body.rows.forEach(function(doc){
+            data.push(doc);
+          });
+          deferred.resolve(data);
+        }
+      });
     }
     return deferred.promise;
   };

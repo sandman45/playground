@@ -2,8 +2,6 @@
  "session" : {
    "maxAge" : 1209600000 //2 weeks
  },
-
-
   "port" : 8081,
   "couch" : {
     "url" : "http://107.170.178.211",

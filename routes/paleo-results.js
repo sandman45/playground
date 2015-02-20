@@ -9,8 +9,12 @@ module.exports = function(app){
   /**
    * paleo-results
    */
-  app.get('/paleo-results/:id', function(req,res,next){
-    couchService.get(req.params.id).then(function(d){
+  app.get('/paleo-results/', function(req,res,next){
+    var id = "";
+    if(req.params.id){
+      id = req.params.id;
+    }
+    couchService.get(id).then(function(d){
       res.send(200, d);
     })
     .fail(function(err){

@@ -2,9 +2,21 @@
  * Created by matthew.sanders on 10/24/14.
  */
 controllers.controller('paleoCtrl',
-  function ($scope, $q, $window) {
+  function ($scope, $q, $window, service) {
 
     $scope.title = "Paleo Chart";
+    $scope.init = function(){
+      getData();
+    };
+
+    var getData = function(){
+      service.getPaleoResults('sandman').then(function(data){
+        console.log(data);
+      }, function(err){
+        console.log(err);
+      });
+    };
+
 
     $scope.config = {
       visible: true, // default: true
@@ -231,4 +243,6 @@ controllers.controller('paleoCtrl',
       }
       return genData;
     }
+
+    $scope.init();
 });
