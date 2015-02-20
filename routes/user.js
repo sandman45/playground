@@ -45,7 +45,8 @@ module.exports = function(app){
       username: req.body.username
     };
     //TODO: have the id be the username? or email?
-    couchService.insert( doc, req.body.username, 0 ).then( function( d ){
+    couchService.insert( doc, req.body.email, 0 ).then( function( d ){
+      console.log("user created: " + d);
       res.send( 200, d );
     })
     .fail(function( err ){

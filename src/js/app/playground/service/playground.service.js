@@ -3,7 +3,7 @@
  */
 var app = angular.module('playGroundApp');
 
-app.factory('service', function( $http, $q, $location ) {
+app.factory('service', function( $http, $q, $location, $log ) {
  var service = {};
 
   service.getPaleoResults = function( id ){
@@ -16,9 +16,26 @@ app.factory('service', function( $http, $q, $location ) {
     })
     .error( function( err, code ) {
         d.reject( err );
+        $log.error(err);
     });
     return d.promise;
   };
+
+  service.insertUser = function( userObj ){
+    var d = $q.defer();
+    var url = "http://localhost:8081/createUser";
+    $http.post( url, userObj ).success( function( data, status, headers, config ){
+      if( data ){
+        d.resolve( data );
+      }
+    })
+    .error( function( err, code ) {
+      d.reject( err );
+      $log.error(err);
+    });
+    return d.promise;
+  };
+
 
   return service;
 
