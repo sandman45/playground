@@ -33,11 +33,8 @@ module.exports = function(app){
   app.post( '/playground/createPaleoResult', function( req, res, next ){
     console.log( 'createPaleoResult' );
     var id = null;
-    if(req.body.id){
-      id = req.body.id;
-    }
     var doc = {
-      userid: req.body.userid,
+      userid: req.session.username,
       value: req.body.value,
       datetime: req.body.datetime
     };
@@ -46,7 +43,7 @@ module.exports = function(app){
       res.send( 200, d );
     })
     .fail(function( err ){
-        console.log( err );
+      console.log( err );
       res.send( err.statusCode, err );
     });
   });

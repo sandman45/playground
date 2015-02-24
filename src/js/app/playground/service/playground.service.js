@@ -51,6 +51,21 @@ app.factory('service', function( $http, $q, $location, $log ) {
     return d.promise;
   };
 
+  service.insertPaleoData = function( data ) {
+    var d = $q.defer();
+    var url = "http://localhost:8081/playground/createPaleoResult";
+    $http.post( url, data ).success( function( data, status, headers, config ) {
+      if( data ){
+        d.resolve( data );
+      }
+    })
+    .error( function( err, code ) {
+      d.reject( err );
+      $log.error( err );
+    });
+    return d.promise;
+  };
+
   service.insertUser = function( userObj ) {
     var d = $q.defer();
     var url = "http://localhost:8081/createUser";

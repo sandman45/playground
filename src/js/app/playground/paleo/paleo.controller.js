@@ -2,7 +2,7 @@
  * Created by matthew.sanders on 10/24/14.
  */
 controllers.controller('paleoCtrl',
-  function ($scope, $q, $window, service, model, utils) {
+  function ($scope, $q, $window, service, model, utils, $modal, $log) {
 
     $scope.title = "Paleo Chart";
     $scope.lineChartData = [];
@@ -102,24 +102,6 @@ controllers.controller('paleoCtrl',
       ];
     };
 
-    $scope.addDataPoint = function() {
-      //show modal with calendar picker
-      var weight = 236.4;
-      var newPoint = { x: moment(), y: weight };
-      $scope.lineChartData[0].values.push( newPoint );
-    };
-
-
-
-
-
-
-
-
-
-
-
-
     $scope.config = {
       visible: true, // default: true
       extended: false, // default: false
@@ -154,8 +136,6 @@ controllers.controller('paleoCtrl',
         }
       }
     };
-
-
 
     $scope.data1 = [
       {
@@ -288,8 +268,6 @@ controllers.controller('paleoCtrl',
       }
     ];
 
-
-
 //
 ////    $scope.data = generateData(1,100,0,40,0,50,'orange','test data');
 //    $scope.cData = generateRandomLinearData(2,[moment(),moment()],1,'months',300,200,12,['red','blue'],['nancy','john']);
@@ -347,6 +325,28 @@ controllers.controller('paleoCtrl',
       }
       return genData;
     }
+
+
+    $scope.open = function (size) {
+
+      var modalInstance = $modal.open({
+        templateUrl: '/js/app/playground/paleo/addDataModal.html',
+        controller: 'addDataCtrl',
+        size: size,
+        resolve: {
+          items: function () {
+            return [];
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed');
+        $scope.init();
+      });
+    };
 
     $scope.init();
 });
