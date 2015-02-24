@@ -77,6 +77,11 @@ app.factory('utils', function($log, $q ) {
     }
   };
 
+  service.approxRollingAverage = function( data, i ) {
+    var avg = (parseFloat(data[i].y) + parseFloat(data[i-1].y) + parseFloat(data[i+1].y))/3;
+    return avg;
+  };
+
 
   return service;
 });

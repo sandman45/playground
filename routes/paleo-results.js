@@ -14,7 +14,7 @@ module.exports = function(app){
       var data = [];
       d.forEach( function (doc) {
         if( _.has( doc.doc, "userid" ) ) {
-          if( req.params.id === doc.doc.userid ) {
+          if( req.session.username === doc.doc.userid ) {
             data.push( doc.doc );
           }
         }
