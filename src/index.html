@@ -19,43 +19,37 @@
 
 </head>
 <body>
-<div class="navbar-wrapper">
-    <div class="container">
-        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#/playground/world">Playground</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#/about">About</a></li>
-                        <li><a href="#/contact">Contact</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Applications<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-header">Playground</li>
-                                <li class="divider"></li>
-                                <li><a href="#/playground/d3">D3</a></li>
-                                <li><a href="#/playground/metals">Metals Charts</a></li>
-                                <li><a href="#/playground/dotdot">Dot Dot!</a></li>
-                                <li class="divider"></li>
-                                <li class="dropdown-header">Paleo</li>
-                                <li><a href="#/playground/paleo">Diet Chart</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+<!-- Navbar -->
+<nav class="navbar navbar-default navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#/index">Playground</a>
     </div>
-</div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#/index">Home <span class="sr-only">(current)</span></a></li>
+        <li><a href="#/playground/paleo">Paleo</a></li>
+        <!--<li><a href="#/playground/dotdot">Dot Dot!</a></li>-->
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#/contact">Contact</a></li>
+        <li><a href="#/about">About</a></li>
+        <li><a href="#/login">Login</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
 
 <div class="container marketing">
     <hr class="featurette-divider">
@@ -93,8 +87,8 @@
 
 <!--physics and 3D engine Libraries-->
 
-<script src="../../lib/cannon.js"></script>
-<script src="../../lib/cannon.demo.js"></script>
+<!--<script src="../../lib/cannon.js"></script>-->
+<!--<script src="../../lib/cannon.demo.js"></script>-->
 <script src="../../lib/dat.gui.js"></script>
 <script src="../../lib/Three.js"></script>
 <script src="../../lib/Detector.js"></script>
@@ -107,11 +101,12 @@
 <script src="js/app/controllers.js"></script>
 <script src="js/app/playground/login/login.controller.js"></script>
 <script src="js/app/playground/login/create.account.controller.js"></script>
-<script src="js/app/playground/ctrl/d3Ctrl.js"></script>
-<script src="js/app/playground/ctrl/worldCtrl.js"></script>
-<script src="js/app/playground/ctrl/metalsCtrl.js"></script>
-<script src="js/app/playground/ctrl/dotDotCtrl.js"></script>
-<script src="js/app/playground/ctrl/paleoCtrl.js"></script>
+<!--<script src="js/app/playground/ctrl/d3Ctrl.js"></script>-->
+<!--<script src="js/app/playground/ctrl/worldCtrl.js"></script>-->
+<!--<script src="js/app/playground/ctrl/metalsCtrl.js"></script>-->
+<script src="js/app/playground/dotdot/dotdot.controller.js"></script>
+<script src="js/app/playground/paleo/paleo.controller.js"></script>
+<script src="js/app/playground/main/main.controller.js"></script>
 
 <!-- DIRECTIVES-->
 <script src="js/app/playground/directive/d3BubbleTesting.js"></script>
@@ -122,6 +117,7 @@
 <!-- SERVICES -->
 <script src="js/app/playground/service/playground.service.js"></script>
 <script src="js/app/playground/utils/playground.utils.service.js"></script>
+<script src="js/app/playground/model/model.js"></script>
 
 <script src="lib/angular-bootstrap-colorpicker.js"></script>
 

@@ -11,46 +11,33 @@ var playGroundApp = angular.module('playGroundApp', [
 
 playGroundApp.config(['$routeProvider',
   function ($routeProvider) {
-    $routeProvider.
-      when('/index', {
-        templateUrl: 'views/playground/main.html',
+    $routeProvider
+      .when('/index', {
+        templateUrl: 'js/app/playground/main/main.html',
         controller: 'mainCtrl'
+        //secure:false
       })
       .when('/login', {
         templateUrl: 'js/app/playground/login/login.html',
         controller: 'loginCtrl'
+        //secure:true
       })
-      .when('/myCarousel', {
-        templateUrl: 'views/playground/main.html',
-        controller: 'mainCtrl'
-      })
-      .when('/playground/world', {
-        templateUrl: 'views/playground/world.html',
-        controller: 'worldCtrl'
-      })
-      .when('/playground/d3', {
-        templateUrl: 'views/playground/d3.html',
-        controller: 'd3Ctrl'
-      })
-      .when('/playground/metals', {
-        templateUrl: 'views/playground/metals.html',
-        controller: 'metalsCtrl'
-      })
-      .when('/playground/dotdot', {
-        templateUrl: 'views/playground/dotDot.html',
-        controller: 'dotDotCtrl'
-      })
+      //.when('/playground/dotdot', {
+      //  templateUrl: 'js/app/playground/dotdot/dotDot.html',
+      //  controller: 'dotDotCtrl'
+      //  //secure:true
+      //})
       .when('/playground/paleo', {
-        templateUrl: 'views/playground/paleo-main.html',
+        templateUrl: 'js/app/playground/paleo/paleo-main.html',
         controller: 'paleoCtrl'
+        //secure:true
       })
       .when('/about', {
         templateUrl: 'views/about.html'
+        //secure:false
       })
       .when('/contact', {
         templateUrl: 'views/contact.html'
-      })
-      .otherwise({
-        redirectTo: '/index'
+        //secure:false
       });
   }]);

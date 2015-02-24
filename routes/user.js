@@ -13,13 +13,14 @@ module.exports = function(app){
         if(data.password === req.body.password){
           //set session
           req.session.username = req.body.email;
-          res.send(200, "Login Successfull");
+          res.send(200, "Success");
         }else{
           res.send(401, "Username or Password incorrect");
         }
       })
       .fail(function(err){
         console.log(err);
+        res.send(err.statusCode, err.message);
       });
     }
   });
