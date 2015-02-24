@@ -23,9 +23,9 @@ app.factory('service', function( $http, $q, $location, $log ) {
 
   service.getUser = function(id) {
     var d = $q.defer();
-    var url = "http://localhost:8081/playground/user/"+id;
+    var url = "http://localhost:8081/playground/user/" + id;
     $http.get( url ).success( function( data, status, headers, config ) {
-      d.resolve(data);
+      d.resolve( data );
     })
     .error( function( err, code ) {
       d.reject( err );
@@ -36,10 +36,9 @@ app.factory('service', function( $http, $q, $location, $log ) {
   };
 
 
-
   service.getPaleoResults = function( id ) {
     var d = $q.defer();
-    var url = "http://localhost:8081/playground/paleo-results/";
+    var url = "http://localhost:8081/playground/paleo-results/" + id;
     $http.get( url ).success( function( data, status, headers, config ) {
       if( data ){
         d.resolve( data );

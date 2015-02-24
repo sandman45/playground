@@ -2,7 +2,7 @@
  * Created by matthew.sanders on 10/24/14.
  */
 controllers.controller('paleoCtrl',
-  function ($scope, $q, $window, service) {
+  function ($scope, $q, $window, service, model) {
 
     $scope.title = "Paleo Chart";
     $scope.init = function(){
@@ -10,7 +10,7 @@ controllers.controller('paleoCtrl',
     };
 
     var getData = function(){
-      service.getPaleoResults('sandman').then(function(data){
+      service.getPaleoResults(model.user._id).then(function(data){
         console.log(data);
       }, function(err){
         console.log(err);

@@ -4,21 +4,25 @@
 
 var CouchService = require('../routeUtil/couchService');
 var couchService = new CouchService('paleo_results');
-
+var _ = require('underscore');
 module.exports = function(app){
   /**
    * paleo-results
    */
-  app.get('/playground/paleo-results/', function(req,res,next){
-    var id = "";
-    if(req.params.id){
-      id = req.params.id;
-    }
-    couchService.get(id).then(function(d){
-      res.send(200, d);
+  app.get('/playground/paleo-results/:id', function( req, res, next ) {
+    couchService.get().then( function ( d ) {
+      var data = [];
+      d.forEach( function (doc) {
+        if( _.has( doc.doc, "userid" ) ) {
+          if( req.params.id === doc.doc.userid ) {
+            data.push( doc.doc );
+          }
+        }
+      });
+      res.send( 200, data );
     })
-    .fail(function(err){
-      res.send(err.statusCode, err);
+    .fail( function( err ) {
+      res.send( err.statusCode, err );
     });
   });
   /**

@@ -62,7 +62,6 @@ var CouchService = (function(){
       this.db.get(id, this.responsePromise(deferred, 'get'));
     }
     else {
-      //this.db.list(this.responsePromise(deferred, 'getAll'));
       var data = [];
       var params = {
         include_docs:true,

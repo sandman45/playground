@@ -39,5 +39,8 @@ playGroundApp.config(['$routeProvider',
       .when('/contact', {
         templateUrl: 'views/contact.html'
         //secure:false
+      })
+      .otherwise({
+        redirectTo: '/index'
       });
-  }]);
+    }]);
