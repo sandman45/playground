@@ -1,7 +1,17 @@
 /**
  * Created by matthew.sanders on 2/23/15.
  */
-angular.module('playGroundApp').controller('mainCtrl', function ($scope) {
+angular.module('playGroundApp').controller('mainCtrl', function ($rootScope, $scope, $log, $location, service, model) {
+  $scope.model = model;
+  if(model.user.firstname){
+    $rootScope.loggedIn = true;
+    $rootScope.firstname = model.user.firstname;
+    $rootScope.lastname = model.user.lastname;
+    //$scope.firstname = model.user.firstname;
+    //$scope.lastname = model.user.lastname;
+  }else{
+    $rootScope.loggedIn = false;
+  }
   $scope.myInterval = 5000;
   var slides = $scope.slides = [];
   var img = [
@@ -21,5 +31,19 @@ angular.module('playGroundApp').controller('mainCtrl', function ($scope) {
   for (var i=0; i<img.length; i++) {
     var image = img[i];
     $scope.addSlide(image);
+  }
+
+
+  $rootScope.logout = function(){
+    service.logout().then(function(data){
+      $log.info(data);
+      $rootScope.loggedIn = false;
+      model.user = {};
+      $rootScope.firstname = "";
+      $rootScope.lastname = "";
+      $location.path('/index');
+    }, function(err){
+      $log.error(err)
+    });
   }
 });

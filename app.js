@@ -71,7 +71,7 @@ app.use(session({
   secret:'myAmazingSecret',
   store:store,
   cookie:{maxAge:config.session.cookie.maxAge}
-})); //TODO: store sessions in couch
+}));
 app.use(express.static('src'));
 app.use(allowCrossDomain);
 app.use(app.router);

@@ -4,6 +4,7 @@
 controllers.controller('paleoCtrl',
   function ($scope, $q, $window, service, model, utils, $modal, $log) {
 
+    $scope.model = model;
     $scope.title = "Paleo Chart";
     $scope.lineChartData = [];
     $scope.lineChartOptions = {
@@ -74,32 +75,34 @@ controllers.controller('paleoCtrl',
     var prepareChartData = function(data){
       var average = [];
       var temp = [];
-      _.forEach( data, function( d ) {
-        temp.push({label:moment.unix(d.datetime).format($scope.dateFormat), x: moment.unix(d.datetime), y: d.value});
-      });
-      temp.sort( function( a, b ) {
-        return a.x - b.x;
-      });
-      average.push({ label:"Average", x: temp[0].x, y: temp[0].y });
-      for(var i = 1; i < temp.length-1; i++ ){
-        var avg = utils.approxRollingAverage( temp, i );
-        console.log(avg);
-        average.push( { label:"Average", x: temp[i].x, y: avg } );
-      }
-      average.push({ label:"Average", x: temp[temp.length-1].x, y: temp[temp.length-1].y });
-
-      $scope.lineChartData = [
-        {
-          color:$scope.color1,
-          key:"weight",
-          values:temp
-        },
-        {
-          color:$scope.color2,
-          key:"moving average",
-          values:average
+      if(data.length>0){
+        _.forEach( data, function( d ) {
+          temp.push({label:moment.unix(d.datetime).format($scope.dateFormat), x: moment.unix(d.datetime), y: d.value});
+        });
+        temp.sort( function( a, b ) {
+          return a.x - b.x;
+        });
+        average.push({ label:"Average", x: temp[0].x, y: temp[0].y });
+        for(var i = 1; i < temp.length-1; i++ ){
+          var avg = utils.approxRollingAverage( temp, i );
+          console.log(avg);
+          average.push( { label:"Average", x: temp[i].x, y: avg } );
         }
-      ];
+        average.push({ label:"Average", x: temp[temp.length-1].x, y: temp[temp.length-1].y });
+
+        $scope.lineChartData = [
+          {
+            color:$scope.color1,
+            key:"weight",
+            values:temp
+          },
+          {
+            color:$scope.color2,
+            key:"moving average",
+            values:average
+          }
+        ];
+      }
     };
 
     $scope.config = {

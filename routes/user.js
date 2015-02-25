@@ -26,7 +26,8 @@ module.exports = function(app){
   });
 
   app.get('/logout', function(req,res,next){
-
+     req.session.destroy();
+     res.send(200, "success");
   });
 
   app.get('/playground/user/:id', function(req,res,next){

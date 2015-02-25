@@ -20,6 +20,20 @@ app.factory('service', function( $http, $q, $location, $log ) {
     return d.promise;
   };
 
+  service.logout = function( data ){
+    var d = $q.defer();
+    var url = "http://localhost:8081/logout"
+    $http.get( url, data).success( function( data, status, headers, config ) {
+      d.resolve(data);
+    })
+    .error( function( err, code ) {
+      d.reject( err );
+      $log.error( err);
+    });
+
+    return d.promise;
+  };
+
 
   service.getUser = function(id) {
     var d = $q.defer();

@@ -1,11 +1,11 @@
 /**
  * Created by matthew.sanders on 2/20/15.
  */
-controllers.controller('loginCtrl', ['$scope', 'service', '$location', '$modal', '$log', 'model',
-  function($scope, service, $location, $modal, $log, model) {
+controllers.controller('loginCtrl', ['$rootScope', '$scope', 'service', '$location', '$modal', '$log', 'model',
+  function($rootScope, $scope, service, $location, $modal, $log, model) {
 
     $scope.alerts = [];
-
+    $scope.model = model;
     $scope.closeAlert = function(i){
       $scope.alerts.splice(i,1);
     };
@@ -42,6 +42,9 @@ controllers.controller('loginCtrl', ['$scope', 'service', '$location', '$modal',
           service.getUser($scope.email).then(function(data){
             $log.info(data);
             model.user = data;
+            $rootScope.loggedIn = true;
+            $rootScope.firstname = model.user.firstname;
+            $rootScope.lastname = model.user.lastname;
             $location.path('/playground/paleo');
           }, function( err ){
             $log.error( err );
