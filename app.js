@@ -33,10 +33,10 @@ var store = new ConnectCouchDB({
   //Name of Database for session storage
   name: 'sessions',
   //How often  expired sessions should be cleaned up
-  host:config.couch.url
-  //reapInterval: config.session.maxAge,
-  //compactInterval:config.session.compactInterval,
-  //setThrottle: config.session.throttle
+  host:config.couch.url,
+  reapInterval: config.session.reapInterval,
+  compactInterval:config.session.compactInterval,
+  setThrottle: config.session.throttle
 });
 
 
@@ -127,11 +127,13 @@ function securityCheck(req, res, next) {
         }
       } else {
         console.log('Forbidden');
+        req.session = null;
         res.send(403, {message: 'Forbidden'});
       }
     }
     else {
       console.log('Forbidden');
+      req.session = null;
       res.send(403, {message: 'Forbidden'});
     }
   });

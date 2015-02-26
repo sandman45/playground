@@ -46,10 +46,10 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
     var scoringMatrix =[];
     var svg;
     var drag_line;
-    var svgWidth = d3.select('#dotDotSection').width||$window.innerWidth||600;
-    var svgHeight = d3.select('#dotDotSection').height||$window.innerHeight||600;
+    var svgWidth = 600;//d3.select('#dotDotSection').width||$window.innerWidth||600;
+    var svgHeight = 600;//d3.select('#dotDotSection').height||$window.innerHeight||600;
 
-    var margins={top:10,bottom:10,left:50,right:100};
+    var margins={top:50,bottom:0,left:50,right:0};
     var h=svgHeight-margins.bottom,
         w=svgWidth-margins.right;
     var nodes = [];

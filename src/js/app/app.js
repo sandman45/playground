@@ -22,11 +22,11 @@ playGroundApp.config(['$routeProvider',
         controller: 'loginCtrl'
         //secure:true
       })
-      //.when('/playground/dotdot', {
-      //  templateUrl: 'js/app/playground/dotdot/dotDot.html',
-      //  controller: 'dotDotCtrl'
-      //  //secure:true
-      //})
+      .when('/playground/dotdot', {
+        templateUrl: 'js/app/playground/dotdot/dotDot.html',
+        controller: 'dotDotCtrl'
+        //secure:true
+      })
       .when('/playground/paleo', {
         templateUrl: 'js/app/playground/paleo/paleo-main.html',
         controller: 'paleoCtrl'

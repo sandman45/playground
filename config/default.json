@@ -2,6 +2,7 @@
  "session" : {
    "maxAge" : 1209600000, //2 weeks
    "compactInterval" : 300000,
+   "reapInterval":600000,
    "throttle" : 60000,
    "cookie":{
      "maxAge" : 1209600000
