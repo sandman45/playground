@@ -64,41 +64,52 @@
 </style>
 
 <h2>{{title}}</h2>
-<div class="playerContainer">
-  <div class="player1">
-    <div>Player 1:
-      <input class="playerForm" type="text" ng-model="player1.player" name="player1" required="true" ng-required="">
-    </div>
-    <div>Color:
-      <div colorpicker ng-model="player1.color">
-        <div id="player1Swatch" ng-style="style1">
-        </div>
-      </div>
-    </div>
-  </div>
-  <div style="background-color: white; width: 10px;"></div>
-  <div class="player2">
-    <div>Player 2:
-      <input class="playerForm" type="text" ng-model="player2.player" name="player2" required="true" ng-required="">
-      </div>
-    <div>Color:
-      <div colorpicker ng-model="player2.color" ng-style="style2">
-        <div id="player2Swatch">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<div>
 
-  <div id="gameControls">
-    <button data-ng-click="submitUserSettings()">Submit</button>
-    <button data-ng-click="startGame()">Start</button>
-    <button data-ng-click="clearGame()">Reset</button>
-  </div>
 
-  <div id="score" data-ng-repeat="player in players" data-ng-class="player.classes">
+  <div id="score" data-ng-repeat="player in players" data-ng-class="player.classes" ng-style="player.style">
     {{player.player}} : {{player.score}}
   </div>
+
+  <div class="playerContainer">
+    <div class="player1">
+      <div>
+        <input class="form-control" type="text" ng-model="player1.player" placeholder="Player 1" name="player1" required="true" ng-required="">
+      </div>
+      <div>Color:
+        <div colorpicker ng-model="player1.color">
+          <div id="player1Swatch" ng-style="style1">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background-color: white; width: 10px;"></div>
+    <div class="player2">
+      <div>
+        <input class="form-control" type="text" ng-model="player2.player" placeholder="Player 2" name="player2" required="true" ng-required="">
+      </div>
+      <div>Color:
+        <div colorpicker ng-model="player2.color" ng-style="style2">
+          <div id="player2Swatch">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div id="gameControls">
+      <button class="btn btn-primary" data-ng-click="submitUserSettings()">Submit</button>
+      <button class="btn btn-primary" data-ng-click="startGame()">Start</button>
+      <button class="btn btn-primary" data-ng-click="clearGame()">Reset</button>
+    </div>
+  </div>
+
+
+</div>
+
+
 
   <section id="dotDotSection" style="width: 100%;height: 100%;">
     <div id="dotDotContainer" style="background-color: #4682b4">

@@ -17,14 +17,18 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
       player:"",
       color:"blue",
       score:0,
-      classes:{active:true}
+      classes:{active:true},
+      style:{'background-color':'grey', 'color':'white'}
+
     };
     $scope.player2 = {
       i:1,
       player:"",
       color:"red",
       score:0,
-      classes:{active:false}
+      classes:{active:false},
+      style:{'background-color':'grey', 'color':'white'}
+
     };
     $scope.players=[];
 
@@ -159,10 +163,11 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
           current_turn = $scope.players[currentTurnIndex];
           _.forEach($scope.players,function(player){
             player.classes.active = false;
+            player.style = {'background-color':'grey','color':'white'};
           });
           $scope.players[currentTurnIndex].classes.active = true;
           $scope.players[currentTurnIndex].classes.color = $scope.players[currentTurnIndex].color;
-          d3.select('.active').style('background-color',$scope.players[currentTurnIndex].classes.color);
+          $scope.players[currentTurnIndex].style = {'background-color':$scope.players[currentTurnIndex].color,'color':'white'};
       });
     }
 
