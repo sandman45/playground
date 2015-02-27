@@ -1,0 +1,95 @@
+<style>
+  .drag_line {
+    stroke: #999;
+    stroke-width: 5;
+    pointer-events: none;
+  }
+
+  .drag_line {
+    stroke: #999;
+    stroke-width: 5;
+    pointer-events: none;
+  }
+
+  .drag_line_hidden {
+    stroke: #999;
+    stroke-width: 0;
+    pointer-events: none;
+  }
+
+  .link {
+    stroke: #999;
+    stroke-width: 5;
+    cursor: crosshair;
+  }
+
+  .link_selected {
+    stroke: #ff7f0e;
+  }
+
+  /*current active player highlight or whatever!*/
+  .active {
+    background-color: lightsteelblue;
+    /*width: 600px;*/
+  }
+
+  #gameControls{
+    float: left;
+  }
+
+</style>
+
+<h2>{{title}}</h2>
+<div>
+
+
+
+
+  <div id="mainStuff" class="panel panel-default">
+    <div class="panel-body">
+      <div>
+        <input class="form-control" type="text" ng-model="player1.player" placeholder="Player 1" name="player1" required="true" ng-required="">
+      </div>
+      <div>Color:
+        <div colorpicker ng-model="player1.color">
+          <div id="player1Swatch" ng-style="style1">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="panel-body">
+      <div>
+        <input class="form-control" type="text" ng-model="player2.player" placeholder="Player 2" name="player2" required="true" ng-required="">
+      </div>
+      <div>Color:
+        <div colorpicker ng-model="player2.color" ng-style="style2">
+          <div id="player2Swatch">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="panel-body">
+      <button class="btn btn-primary" data-ng-click="submitUserSettings()">Submit</button>
+      <button class="btn btn-primary" data-ng-click="startGame()" ng-hide="disableStart">Start</button>
+      <button class="btn btn-primary" data-ng-click="clearGame()" ng-show="disableStart">Restart</button>
+    </div>
+
+
+  <div class="panel-body">
+    <div class="panel" data-ng-repeat="player in players" data-ng-class="player.classes" ng-style="player.style">
+      {{player.player}} : {{player.score}}
+    </div>
+  </div>
+
+  <section id="dotDotSection" class="panel-body" >
+  </section>
+  </div>
+</div>
+
+
+

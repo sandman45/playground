@@ -1,33 +1,42 @@
 /**
  * Created by matthew.sanders on 5/2/14.
  */
-controllers.controller('dotDotCtrl', ['$scope','$q',
-  function ($scope,$q) {
-    $scope.title = "Dot Dot!";
-    $scope.startGame = start;
-    $scope.clearGame = reset;
-//    $scope.showStart = false;
+controllers.controller('dotDotCtrl', ['$scope','$q','$window',
+  function ($scope,$q,$window) {
 
+    $scope.title = "Dot Dot!";
+    $scope.clearGame = reset;
+    $scope.showStart = true;
+    $scope.disableStart = false;
+
+    //-- style ----------------------
+    $scope.style1 = {'background-color':'blue','height':'25px','width':'25px'};
+    $scope.style2 = {'background-color':'red','height':'25px','width':'25px'};
     //-- player variables ---------------------
     $scope.player1 = {
       i:0,
       player:"",
-      color:"",
+      color:"blue",
       score:0,
-      classes:{active:true}
+      classes:{active:true},
+      style:{'background-color':'white', 'color':'black'}
+
     };
     $scope.player2 = {
       i:1,
       player:"",
-      color:"",
+      color:"red",
       score:0,
-      classes:{active:false}
+      classes:{active:false},
+      style:{'background-color':'white', 'color':'black'}
+
     };
     $scope.players=[];
 
+
+    //-- game variables -------------------------
     var currentTurnIndex=0;
     var current_turn;
-    //-- game variables -------------------------
     var radius = 10;
     var radiusOver = 12;
     var lineThickness = 5;
@@ -38,49 +47,52 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
     var scoringMatrix =[];
     var svg;
     var drag_line;
-    var svgWidth = 600;
-    var svgHeight = 600;
-
-    var margins={top:50,bottom:0,left:50,right:0};
-    var h=svgHeight-margins.bottom,
-        w=svgWidth-margins.right;
+    var svgWidth;
+    var svgHeight;
+    var margins = {top: 35, bottom: 0, left: 20, right: 0};
+    var h;
+    var w;
     var nodes = [];
     var links = [];
     var i = 0;
-
-    var xScale  = d3.scale.linear().domain([0,spacing*grid[0]]).range([margins.left,w]);
-    var yScale  = d3.scale.linear().domain([0,spacing*grid[1]]).range([margins.top,h]);
-
-    var force = d3.layout.force()
-      .charge(-20)
-      .size([w, h])
-      .nodes(nodes)
-      .links(links)
-      .on("tick", tick)
-      .start();
-
+    var xScale;
+    var yScale;
+    var force;
     var mousedown_node = null;
     var selected_node = null;
     var selected_link = null;
     var drawCheck = false;
 
-    init();
 
     /**
-     * tick
+     * dimensions
      */
-    function tick() {
-      svg.selectAll("circle")
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+    function dimensions(){
+      var domElement = document.getElementById('dotDotSection');
+      console.log("new width: " + domElement.clientWidth);
+      svgWidth = domElement.clientWidth;
+      svgHeight = domElement.clientWidth;
+      h = svgHeight - (margins.bottom);
+      w = svgWidth - (margins.right);
+      xScale  = d3.scale.linear().domain([0,spacing*grid[0]]).range([margins.left,w]);
+      yScale  = d3.scale.linear().domain([0,spacing*grid[1]]).range([margins.top,h]);
+
+      force = d3.layout.force()
+        .charge(-20)
+        .size([w, h])
+        .nodes(nodes)
+        .links(links)
+        .on("tick", tick)
+        .start();
     }
-    /**
-     * init
-     */
-    function init() {
+
+    $scope.startGame = function() {
+      $scope.disableStart = true;
       createGridCoords();
-      svg = d3.select('#dotDotContainer').append('svg').attr('height', h).attr('width', w).style('background','gray');
-    }
+      dimensions();
+      svg = d3.select('#dotDotSection').append('svg').attr('height', h).attr('width', '100%').style({'background':'white','border':'2px','border-color':'orange'});
+      start();
+    };
 
     /**
      * boxValidator
@@ -151,10 +163,11 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
           current_turn = $scope.players[currentTurnIndex];
           _.forEach($scope.players,function(player){
             player.classes.active = false;
+            player.style = {'background-color':'grey','color':'white'};
           });
           $scope.players[currentTurnIndex].classes.active = true;
           $scope.players[currentTurnIndex].classes.color = $scope.players[currentTurnIndex].color;
-          d3.select('.active').style('background-color',$scope.players[currentTurnIndex].classes.color);
+          $scope.players[currentTurnIndex].style = {'background-color':$scope.players[currentTurnIndex].color,'color':'white'};
       });
     }
 
@@ -222,10 +235,17 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
       nodes = [];
       links = [];
       scoringMatrix = [];
+      _.each($scope.players, function(player){
+        player.score = 0;
+      });
       i = 0;
       currentTurnIndex = 0;
       current_turn = $scope.players[currentTurnIndex];
       force.start();
+      createGridCoords();
+      dimensions();
+      svg.attr( 'height', h );
+      start();
     }
     /**
      * createDot
@@ -434,4 +454,39 @@ controllers.controller('dotDotCtrl', ['$scope','$q',
         }
       }
     }
+
+    /**
+     * tick
+     */
+    function tick() {
+      svg.selectAll("circle")
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+    }
+
+
+    // -------------------------- Watches --------------------------//
+    $scope.$watch('player1.color',function(e){
+//      console.log("player1 color changes: " + e);
+      if(e!="")$scope.style1['background-color'] = e;
+
+    });
+    $scope.$watch('player2.color',function(e){
+//      console.log("player2 color changes: " + e);
+      if(e!="")$scope.style2['background-color'] = e;
+    });
+
+
+    //-------------------------Socket IO ---------------------------//
+    var socket = io.connect();
+
+    $scope.submitUserSettings = function(){
+      socket.emit('gameCommand',$scope.player1);
+      socket.on('gameCommand',function(command){
+        //console.log(command);
+      });
+      socket.on('news',function(news){
+        //console.log(news);
+      });
+    };
   }]);
