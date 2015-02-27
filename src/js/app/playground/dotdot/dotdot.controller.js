@@ -3,10 +3,11 @@
  */
 controllers.controller('dotDotCtrl', ['$scope','$q','$window',
   function ($scope,$q,$window) {
+
     $scope.title = "Dot Dot!";
-    $scope.startGame = start;
     $scope.clearGame = reset;
     $scope.showStart = true;
+    $scope.disableStart = false;
 
     //-- style ----------------------
     $scope.style1 = {'background-color':'blue','height':'25px','width':'25px'};
@@ -18,7 +19,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
       color:"blue",
       score:0,
       classes:{active:true},
-      style:{'background-color':'grey', 'color':'white'}
+      style:{'background-color':'white', 'color':'black'}
 
     };
     $scope.player2 = {
@@ -27,19 +28,15 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
       color:"red",
       score:0,
       classes:{active:false},
-      style:{'background-color':'grey', 'color':'white'}
+      style:{'background-color':'white', 'color':'black'}
 
     };
     $scope.players=[];
 
-    $scope.$watch('$window.innerWidth',function(data){
-      console.log($window.innerWidth);
-    });
 
-
+    //-- game variables -------------------------
     var currentTurnIndex=0;
     var current_turn;
-    //-- game variables -------------------------
     var radius = 10;
     var radiusOver = 12;
     var lineThickness = 5;
@@ -50,49 +47,52 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
     var scoringMatrix =[];
     var svg;
     var drag_line;
-    var svgWidth = 600;//d3.select('#dotDotSection').width||$window.innerWidth||600;
-    var svgHeight = 600;//d3.select('#dotDotSection').height||$window.innerHeight||600;
-
-    var margins={top:50,bottom:0,left:50,right:0};
-    var h=svgHeight-margins.bottom,
-        w=svgWidth-margins.right;
+    var svgWidth;
+    var svgHeight;
+    var margins = {top: 35, bottom: 0, left: 20, right: 0};
+    var h;
+    var w;
     var nodes = [];
     var links = [];
     var i = 0;
-
-    var xScale  = d3.scale.linear().domain([0,spacing*grid[0]]).range([margins.left,w]);
-    var yScale  = d3.scale.linear().domain([0,spacing*grid[1]]).range([margins.top,h]);
-
-    var force = d3.layout.force()
-      .charge(-20)
-      .size([w, h])
-      .nodes(nodes)
-      .links(links)
-      .on("tick", tick)
-      .start();
-
+    var xScale;
+    var yScale;
+    var force;
     var mousedown_node = null;
     var selected_node = null;
     var selected_link = null;
     var drawCheck = false;
 
-    init();
 
     /**
-     * tick
+     * dimensions
      */
-    function tick() {
-      svg.selectAll("circle")
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
+    function dimensions(){
+      var domElement = document.getElementById('dotDotSection');
+      console.log("new width: " + domElement.clientWidth);
+      svgWidth = domElement.clientWidth;
+      svgHeight = domElement.clientWidth;
+      h = svgHeight - (margins.bottom);
+      w = svgWidth - (margins.right);
+      xScale  = d3.scale.linear().domain([0,spacing*grid[0]]).range([margins.left,w]);
+      yScale  = d3.scale.linear().domain([0,spacing*grid[1]]).range([margins.top,h]);
+
+      force = d3.layout.force()
+        .charge(-20)
+        .size([w, h])
+        .nodes(nodes)
+        .links(links)
+        .on("tick", tick)
+        .start();
     }
-    /**
-     * init
-     */
-    function init() {
+
+    $scope.startGame = function() {
+      $scope.disableStart = true;
       createGridCoords();
-      svg = d3.select('#dotDotContainer').append('svg').attr('height', h).attr('width', w).style('background','gray');
-    }
+      dimensions();
+      svg = d3.select('#dotDotSection').append('svg').attr('height', h).attr('width', '100%').style({'background':'white','border':'2px','border-color':'orange'});
+      start();
+    };
 
     /**
      * boxValidator
@@ -235,10 +235,17 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
       nodes = [];
       links = [];
       scoringMatrix = [];
+      _.each($scope.players, function(player){
+        player.score = 0;
+      });
       i = 0;
       currentTurnIndex = 0;
       current_turn = $scope.players[currentTurnIndex];
       force.start();
+      createGridCoords();
+      dimensions();
+      svg.attr( 'height', h );
+      start();
     }
     /**
      * createDot
@@ -447,6 +454,16 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
         }
       }
     }
+
+    /**
+     * tick
+     */
+    function tick() {
+      svg.selectAll("circle")
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+    }
+
 
     // -------------------------- Watches --------------------------//
     $scope.$watch('player1.color',function(e){

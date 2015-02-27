@@ -30,33 +30,9 @@
   /*current active player highlight or whatever!*/
   .active {
     background-color: lightsteelblue;
-    width: 600px;
+    /*width: 600px;*/
   }
 
-  .playerContainer {
-    width: 100%;
-    height: 100px;
-    background-color: lightslategray;
-    box-shadow: 10px 10px 5px #888888;
-  }
-
-  .player1 {
-    float: left;
-    width: 300px;
-    /*height: 200px;*/
-    /*box-shadow: 10px 10px 5px #888888;*/
-  }
-
-  .player2 {
-    margin-left: 320px;
-    width: 300px;
-    /*height: 200px;*/
-    /*box-shadow: 10px 10px 5px #888888;*/
-  }
-
-  .playerForm {
-    /*float: left;*/
-  }
   #gameControls{
     float: left;
   }
@@ -67,12 +43,10 @@
 <div>
 
 
-  <div id="score" data-ng-repeat="player in players" data-ng-class="player.classes" ng-style="player.style">
-    {{player.player}} : {{player.score}}
-  </div>
 
-  <div class="playerContainer">
-    <div class="player1">
+
+  <div id="mainStuff" class="panel panel-default">
+    <div class="panel-body">
       <div>
         <input class="form-control" type="text" ng-model="player1.player" placeholder="Player 1" name="player1" required="true" ng-required="">
       </div>
@@ -84,8 +58,8 @@
       </div>
     </div>
 
-    <div style="background-color: white; width: 10px;"></div>
-    <div class="player2">
+
+    <div class="panel-body">
       <div>
         <input class="form-control" type="text" ng-model="player2.player" placeholder="Player 2" name="player2" required="true" ng-required="">
       </div>
@@ -99,22 +73,23 @@
 
 
 
-    <div id="gameControls">
+    <div class="panel-body">
       <button class="btn btn-primary" data-ng-click="submitUserSettings()">Submit</button>
-      <button class="btn btn-primary" data-ng-click="startGame()">Start</button>
-      <button class="btn btn-primary" data-ng-click="clearGame()">Reset</button>
+      <button class="btn btn-primary" data-ng-click="startGame()" ng-hide="disableStart">Start</button>
+      <button class="btn btn-primary" data-ng-click="clearGame()" ng-show="disableStart">Restart</button>
+    </div>
+
+
+  <div class="panel-body">
+    <div class="panel" data-ng-repeat="player in players" data-ng-class="player.classes" ng-style="player.style">
+      {{player.player}} : {{player.score}}
     </div>
   </div>
 
-
-</div>
-
-
-
-  <section id="dotDotSection" style="width: 100%;height: 100%;">
-    <div id="dotDotContainer" style="background-color: #4682b4">
-    </div>
+  <section id="dotDotSection" class="panel-body" >
   </section>
+  </div>
+</div>
 
 
 
