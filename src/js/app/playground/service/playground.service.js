@@ -5,11 +5,11 @@ var app = angular.module('playGroundApp');
 
 app.factory('service', function( $http, $q, $location, $log ) {
  var service = {};
-
+ var url = "http://107.170.178.211:8081/"
   service.login = function( data ){
     var d = $q.defer();
-    var url = "http://localhost:8081/login"
-    $http.post( url, data).success( function( data, status, headers, config ) {
+    var _url = url + "login";
+    $http.post( _url, data).success( function( data, status, headers, config ) {
       d.resolve(data);
     })
     .error( function( err, code ) {
@@ -22,8 +22,8 @@ app.factory('service', function( $http, $q, $location, $log ) {
 
   service.logout = function( data ){
     var d = $q.defer();
-    var url = "http://localhost:8081/logout"
-    $http.get( url, data).success( function( data, status, headers, config ) {
+    var _url = url + "logout";
+    $http.get( _url, data).success( function( data, status, headers, config ) {
       d.resolve(data);
     })
     .error( function( err, code ) {
@@ -37,8 +37,8 @@ app.factory('service', function( $http, $q, $location, $log ) {
 
   service.getUser = function(id) {
     var d = $q.defer();
-    var url = "http://localhost:8081/playground/user/" + id;
-    $http.get( url ).success( function( data, status, headers, config ) {
+    var _url = url + "playground/user/" + id;
+    $http.get( _url ).success( function( data, status, headers, config ) {
       d.resolve( data );
     })
     .error( function( err, code ) {
@@ -52,8 +52,8 @@ app.factory('service', function( $http, $q, $location, $log ) {
 
   service.getPaleoResults = function( id ) {
     var d = $q.defer();
-    var url = "http://localhost:8081/playground/paleo-results/" + id;
-    $http.get( url ).success( function( data, status, headers, config ) {
+    var _url = url + "playground/paleo-results/" + id;
+    $http.get( _url ).success( function( data, status, headers, config ) {
       if( data ){
         d.resolve( data );
       }
@@ -67,8 +67,8 @@ app.factory('service', function( $http, $q, $location, $log ) {
 
   service.insertPaleoData = function( data ) {
     var d = $q.defer();
-    var url = "http://localhost:8081/playground/createPaleoResult";
-    $http.post( url, data ).success( function( data, status, headers, config ) {
+    var _url = url + "/playground/createPaleoResult";
+    $http.post( _url, data ).success( function( data, status, headers, config ) {
       if( data ){
         d.resolve( data );
       }
@@ -82,8 +82,8 @@ app.factory('service', function( $http, $q, $location, $log ) {
 
   service.insertUser = function( userObj ) {
     var d = $q.defer();
-    var url = "http://localhost:8081/createUser";
-    $http.post( url, userObj ).success( function( data, status, headers, config ) {
+    var _url = url + "/createUser";
+    $http.post( _url, userObj ).success( function( data, status, headers, config ) {
       if( data ){
         d.resolve( data );
       }
@@ -94,8 +94,5 @@ app.factory('service', function( $http, $q, $location, $log ) {
     });
     return d.promise;
   };
-
-
   return service;
-
 });
