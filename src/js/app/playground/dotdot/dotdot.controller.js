@@ -478,15 +478,15 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
 
 
     //-------------------------Socket IO ---------------------------//
-    var socket = io.connect();
-
-    $scope.submitUserSettings = function(){
-      socket.emit('gameCommand',$scope.player1);
-      socket.on('gameCommand',function(command){
-        //console.log(command);
-      });
-      socket.on('news',function(news){
-        //console.log(news);
-      });
-    };
+    //var socket = io.connect();
+    //
+    //$scope.submitUserSettings = function(){
+    //  socket.emit('gameCommand',$scope.player1);
+    //  socket.on('gameCommand',function(command){
+    //    //console.log(command);
+    //  });
+    //  socket.on('news',function(news){
+    //    //console.log(news);
+    //  });
+    //};
   }]);
