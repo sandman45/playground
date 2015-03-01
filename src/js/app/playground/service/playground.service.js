@@ -67,7 +67,7 @@ app.factory('service', function( $http, $q, $location, $log ) {
 
   service.insertPaleoData = function( data ) {
     var d = $q.defer();
-    var _url = url + "/playground/createPaleoResult";
+    var _url = url + "playground/createPaleoResult";
     $http.post( _url, data ).success( function( data, status, headers, config ) {
       if( data ){
         d.resolve( data );
@@ -82,7 +82,7 @@ app.factory('service', function( $http, $q, $location, $log ) {
 
   service.insertUser = function( userObj ) {
     var d = $q.defer();
-    var _url = url + "/createUser";
+    var _url = url + "createUser";
     $http.post( _url, userObj ).success( function( data, status, headers, config ) {
       if( data ){
         d.resolve( data );
