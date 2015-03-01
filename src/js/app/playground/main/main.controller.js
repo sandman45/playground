@@ -33,7 +33,7 @@ angular.module('playGroundApp').controller('mainCtrl', function ($rootScope, $sc
     $scope.addSlide(image);
   }
 
-
+//TODO: logout isnt working when on other pages
   $rootScope.logout = function(){
     service.logout().then(function(data){
       $log.info(data);
