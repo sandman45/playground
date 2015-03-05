@@ -83,7 +83,7 @@ app.options('/*', function(req, res){
   res.send(200);
 });
 
-//-- require all routes in kobol directory to run security check
+//-- require all routes in playground directory to run security check
 app.all("/playground/*", securityCheck, function(req, res, next){
   next();
 });

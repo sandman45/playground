@@ -12,7 +12,7 @@ controllers.controller('createAccountCtrl', ['$scope', '$modalInstance', 'servic
 
     $scope.create = function(){
       var userObj = {
-        email: $scope.email1,
+        email: $scope.email,
         password: $scope.pass1,
         username:$scope.username,
         firstname:$scope.firstname,
@@ -37,16 +37,16 @@ controllers.controller('createAccountCtrl', ['$scope', '$modalInstance', 'servic
 
     var validate = function(userObj){
       var valid = false;
-      if(userObj.password && userObj.password === $scope.pass2){
-        valid = true;
-      }else{
-        $scope.alerts.push({type:'danger',msg:'Passwords do not match'});
-        valid = false
-      }
       if(utils.validateEmail(userObj.email)){
         valid = true;
       }else{
         $scope.alerts.push({type:'danger',msg:'Invalid email format. Should be XXXX@XXXX.com, or XXX.XXXXX@XXXX.com'});
+        valid = false
+      }
+      if(userObj.password && userObj.password === $scope.pass2){
+        valid = true;
+      }else{
+        $scope.alerts.push({type:'danger',msg:'Passwords do not match'});
         valid = false
       }
       if(userObj.username && userObj.username.length>0){
@@ -73,7 +73,6 @@ controllers.controller('createAccountCtrl', ['$scope', '$modalInstance', 'servic
         $scope.alerts.push({type:'danger',msg:'Invalid phone format. Should be XXX-XXX-XXXX, XXX.XXX.XXXX, XXX XXX XXXX'});
         valid = false
       }
-
       return valid;
     }
 

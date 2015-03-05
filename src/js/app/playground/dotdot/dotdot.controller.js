@@ -1,21 +1,21 @@
 /**
  * Created by matthew.sanders on 5/2/14.
  */
-controllers.controller('dotDotCtrl', ['$scope','$q','$window',
-  function ($scope,$q,$window) {
-
+controllers.controller('dotDotCtrl', ['$scope','$q','$window','model',
+  function ($scope,$q,$window,model) {
+    $scope.model = model;
     $scope.title = "Dot Dot!";
     $scope.clearGame = reset;
     $scope.showStart = true;
     $scope.disableStart = false;
 
     //-- style ----------------------
-    $scope.style1 = {'background-color':'blue','height':'25px','width':'25px'};
-    $scope.style2 = {'background-color':'red','height':'25px','width':'25px'};
+    $scope.style1 = {'background-color':'blue','height':'44px','width':'44px'};
+    $scope.style2 = {'background-color':'red','height':'44px','width':'44px'};
     //-- player variables ---------------------
     $scope.player1 = {
       i:0,
-      player:"",
+      player:$scope.model.user.firstname,
       color:"blue",
       score:0,
       classes:{active:true},
@@ -71,7 +71,7 @@ controllers.controller('dotDotCtrl', ['$scope','$q','$window',
       var domElement = document.getElementById('dotDotSection');
       console.log("new width: " + domElement.clientWidth);
       svgWidth = domElement.clientWidth;
-      svgHeight = domElement.clientWidth;
+      svgHeight = domElement.clientWidth/1.5;
       h = svgHeight - (margins.bottom);
       w = svgWidth - (margins.right);
       xScale  = d3.scale.linear().domain([0,spacing*grid[0]]).range([margins.left,w]);
