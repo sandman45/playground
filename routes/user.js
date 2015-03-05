@@ -4,39 +4,49 @@
 
 var CouchService = require('../routeUtil/couchService');
 var couchService = new CouchService('users');
+var crypto = require('crypto-js');
 
 module.exports = function(app){
-  app.post('/login', function(req,res,next){
+  app.post('/login', function( req, res, next ){
     if(req.body.email && req.body.email.length>0){
       couchService.get(req.body.email).then(function(data){
         console.log(data);
-        if(data.password === req.body.password){
+        if(data.password === crypto.SHA3(req.body.password).toString()){
           //set session
           req.session.username = req.body.email;
+          req.session.firstname = data.firstname;
+          req.session.lastname = data.lastname;
+          req.session.email = data.email;
           res.send(200, "Success");
         }else{
-          res.send(401, "Username or Password incorrect");
+          res.send(401, {message:"Username or Password incorrect"});
         }
       })
       .fail(function(err){
         console.log(err);
-        res.send(err.statusCode, err.message);
+          if(err.message === "missing"){
+            res.send(err.statusCode, {message:"Username or Password incorrect"});
+          }else{
+            res.send(err.statusCode, {message:err.message});
+          }
       });
+    }else{
+      res.send(402, {message:"Username or Password incorrect"})
     }
   });
 
-  app.get('/logout', function(req,res,next){
+  app.get('/logout', function( req, res, next ){
      req.session.destroy();
      res.send(200, "success");
   });
 
-  app.get('/playground/user/:id', function(req,res,next){
-    couchService.get(req.params.id).then(function(d){
-      res.send(200, d);
-    })
-    .fail(function(err){
-      res.send(err.statusCode, err);
-    });
+  app.get('/playground/user/:id', function( req, res, next ){
+      couchService.get( req.params.id === "refresh" ? req.session.email : req.params.id ).then( function( d ){
+        res.send( 200, d );
+      })
+      .fail(function( err ){
+        res.send( err.statusCode, err );
+      });
   });
   /**
    * createUser
@@ -53,14 +63,14 @@ module.exports = function(app){
       email: req.body.email,
       firstname: req.body.firstname,
       lastname: req.body.lastname,
-      password: req.body.password,
+      password: crypto.SHA3(req.body.password).toString(),
       phone: req.body.phone,
       postal: req.body.postal,
       state: req.body.state,
       userid: req.body.userid,
       username: req.body.username
     };
-    //TODO: have the id be the username? or email?
+
     couchService.insert( doc, req.body.email, 0 ).then( function( d ){
       console.log("user created: " + d);
       res.send( 200, d );

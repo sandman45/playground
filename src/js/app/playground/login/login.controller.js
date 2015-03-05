@@ -1,8 +1,8 @@
 /**
  * Created by matthew.sanders on 2/20/15.
  */
-controllers.controller('loginCtrl', ['$rootScope', '$scope', 'service', '$location', '$modal', '$log', 'model',
-  function($rootScope, $scope, service, $location, $modal, $log, model) {
+controllers.controller('loginCtrl', ['$scope', 'service', '$location', '$modal', '$log', 'model',
+  function($scope, service, $location, $modal, $log, model) {
 
     $scope.alerts = [];
     $scope.model = model;
@@ -42,23 +42,23 @@ controllers.controller('loginCtrl', ['$rootScope', '$scope', 'service', '$locati
           service.getUser($scope.email).then(function(data){
             $log.info(data);
             model.user = data;
-            $rootScope.loggedIn = true;
-            $rootScope.firstname = model.user.firstname;
-            $rootScope.lastname = model.user.lastname;
+            model.user.loggedIn = true;
+            model.user.firstname;
+            model.user.lastname;
             $location.path('/playground/paleo');
           }, function( err ){
             $log.error( err );
-            $scope.alerts.push( { type:'danger', msg:err } );
+            $scope.alerts.push( { type:'danger', msg:err.message } );
             //show alert
           })
         }else{
           $log.error( err );
-          $scope.alerts.push( { type:'danger', msg:err } );
+          $scope.alerts.push( { type:'danger', msg:err.message } );
         }
         model.user = data;
       },function( err ) {
         $log.error( err );
-        $scope.alerts.push( { type:'danger', msg:err } );
+        $scope.alerts.push( { type:'danger', msg:err.message } );
       });
     };
   }]);

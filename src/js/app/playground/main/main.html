@@ -1,4 +1,10 @@
 <div ng-controller="mainCtrl">
+  <div>
+    Wanna play Dot Dot! ? Create an account for free!
+  </div>
+  <br>
+  <button class="btn btn-default" ng-click="createAccount()">Create Account</button>
+  <hr>
   <div style="height: 305px">
     <carousel interval="myInterval">
       <slide ng-repeat="slide in slides" active="slide.active">
@@ -9,6 +15,9 @@
       </slide>
     </carousel>
   </div>
+
+
+
 </div>
 
 
