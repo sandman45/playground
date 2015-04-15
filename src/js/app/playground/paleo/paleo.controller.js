@@ -21,7 +21,11 @@ controllers.controller('paleoCtrl',
         "dispatch": {},
         "xAxisTickFormat":$scope.dateFormat,
         "xAxis": {
-          "axisLabel": "Time (ms)"
+          "axisLabel": "Time (ms)",
+          "showMaxMin":false,
+          "tickFormat": function(d){
+            return d3.time.format('%x')(new Date(d));
+          }
         },
         "yAxis": {
           "axisLabel": "Weight (lbs)",
@@ -57,7 +61,7 @@ controllers.controller('paleoCtrl',
       getData().then(function(data){
         prepareChartData(data);
       }, function(err){
-        console.log(err);
+        $log.error( err );
       });
     };
 
@@ -66,7 +70,7 @@ controllers.controller('paleoCtrl',
       service.getPaleoResults( model.user._id ).then( function( data ) {
         def.resolve( data );
       }, function( err ){
-        console.log( err );
+        $log.error( err );
         def.reject( err );
       });
       return def.promise;
@@ -85,7 +89,7 @@ controllers.controller('paleoCtrl',
         average.push({ label:"Average", x: temp[0].x, y: temp[0].y });
         for(var i = 1; i < temp.length-1; i++ ){
           var avg = utils.approxRollingAverage( temp, i );
-          console.log(avg);
+          //console.log(avg);
           average.push( { label:"Average", x: temp[i].x, y: avg } );
         }
         average.push({ label:"Average", x: temp[temp.length-1].x, y: temp[temp.length-1].y });
@@ -102,7 +106,10 @@ controllers.controller('paleoCtrl',
             values:average
           }
         ];
+        $scope.average = utils.calculateAverage(data).toFixed(2);
       }
+
+
     };
 
     $scope.config = {
@@ -350,6 +357,31 @@ controllers.controller('paleoCtrl',
         $scope.init();
       });
     };
+
+    //BMI Modal
+    $scope.openBMI = function (size) {
+
+      var bmiModalInstance = $modal.open({
+        templateUrl: '/js/app/playground/paleo/bmiModal.html',
+        controller: 'bmiModalCtrl',
+        size: size,
+        resolve: {
+          data: function () {
+            return {
+              mass: $scope.average
+            };
+          }
+        }
+      });
+
+      bmiModalInstance.result.then(function (data) {
+        $scope.bmi = utils.calculateBMI(data.type, data.height, data.mass).toFixed(2);
+      }, function () {
+        $log.info('Modal dismissed');
+        $scope.init();
+      });
+    };
+
 
     $scope.init();
 });
