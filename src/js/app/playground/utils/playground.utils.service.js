@@ -82,6 +82,24 @@ app.factory('utils', function($log, $q ) {
     return avg;
   };
 
+  service.calculateAverage = function(data){
+    var val = 0;
+    _.each(data, function(dataPoint){
+      val = val + parseFloat(dataPoint.value);
+    });
+    return val / data.length;
+  };
+
+  service.calculateBMI = function(type, height, mass){
+    var factor = 703;
+    var bmi;
+        bmi = parseFloat(mass) / Math.pow(parseFloat(height), 2);
+    if(type != "metric"){
+      bmi = bmi * factor;
+    }
+    return bmi;
+  };
+
 
   return service;
 });
