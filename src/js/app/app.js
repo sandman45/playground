@@ -40,6 +40,10 @@ playGroundApp.config(['$routeProvider',
         templateUrl: 'views/contact.html'
         //secure:false
       })
+      .when('/playground/space', {
+        templateUrl: 'js/app/playground/space/space-explore/space-explore.html',
+        controller: 'spaceCtrl'
+      })
       .otherwise({
         redirectTo: '/index'
       });
