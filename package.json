@@ -24,6 +24,7 @@
     "moment": "~2.1.0",
     "nano": "^6.0.2",
     "node-schedule": "^0.1.13",
+    "pathfinding": "git://github.com/schteppe/PathFinding3D.js.git#master",
     "q": "~0.9.7",
     "request": "^2.34.0",
     "socket.io": "^0.9.17",

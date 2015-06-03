@@ -67,7 +67,7 @@ controllers.controller('spaceCtrl', //$http,$routParams
       //
       //shininess = 15;
       //
-      materials.push( new THREE.MeshPhongMaterial( { map: imgTexture2, bumpMap: imgTexture2, bumpScale: bumpScale, color: 0xffffff, specular: specular, shininess: shininess, metal: false, shading: shading } ) );
+      //materials.push( new THREE.MeshPhongMaterial( { map: imgTexture2, bumpMap: imgTexture2, bumpScale: bumpScale, color: 0xffffff, specular: specular, shininess: shininess, metal: false, shading: shading } ) );
       //materials.push( new THREE.MeshPhongMaterial( { map: imgTexture2, bumpMap: imgTexture2, bumpScale: bumpScale, color: 0x000000, specular: 0xaaff00, shininess: shininess, metal: true, shading: shading } ) );
       //materials.push( new THREE.MeshPhongMaterial( { map: imgTexture2, bumpMap: imgTexture2, bumpScale: bumpScale, color: 0x000000, specular: 0x00ffaa, shininess: shininess, metal: true, shading: shading } ) );
       //materials.push( new THREE.MeshPhongMaterial( { map: imgTexture3, bumpMap: imgTexture3, bumpScale: bumpScale, color: 0xffffff, specular: specular, shininess: shininess, metal: false, shading: shading } ) );
@@ -89,9 +89,9 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
         sphere = new THREE.Mesh( geometry, material );
 
-        sphere.position.x = ( i % 4 ) * 200 - 200;
-        sphere.position.z = Math.floor( i / 4 ) * 200 - 200;
-
+        sphere.position.x = 0//( i % 4 ) * 200 - 200;
+        sphere.position.z = 0//Math.floor( i / 4 ) * 200 - 200;
+        sphere.position.y = 0;
         objects.push( sphere );
 
         scene.add( sphere );
@@ -104,14 +104,47 @@ controllers.controller('spaceCtrl', //$http,$routParams
         path:'http://localhost:8081/js/app/playground/space/space-explore/models/tieFighter/starwars-tie-fighter.json',
         texture:'js/app/playground/space/space-explore/models/Spitfire/Spitfire.png'
        };
+
       for( var j = 0; j < 3; j++){
         var position = {
           x:25*j,
           y:25,
           z:0
         };
-        spaceLoader.loadModel(scene, objects, model, position, j);
+        spaceLoader.loadModel(scene, objects, model, position, j, 'tie' + j);
       }
+
+
+      var model2 = {
+        path:'http://localhost:8081/js/app/playground/space/space-explore/models/mFalcon/starwars-millennium-falcon.json',
+        texture:'js/app/playground/space/space-explore/models/Spitfire/Spitfire.png'
+      };
+
+      spaceLoader.loadModel(scene, objects, model2, {x:200,y:150,z:150}, 5, 'falcon');
+
+      //----Grid Board-------//
+      var matrix = [
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0]
+      ];
+
+      // plane
+      var plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshNormalMaterial());
+      plane.overdraw = true
+      plane.name = 'gridBoard';
+      plane.rotation.z = 0;
+      plane.rotation.x = 90;
+      plane.rotation.y = 0;
+      scene.add( plane );
+
+
+
+
+
 
       particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
       scene.add( particleLight );
@@ -125,7 +158,7 @@ controllers.controller('spaceCtrl', //$http,$routParams
       scene.add( directionalLight );
 
       var pointLight = new THREE.PointLight( 0xffffff, 2, 800 );
-      particleLight.add( pointLight );
+      //particleLight.add( pointLight );
 
       //
 
@@ -201,18 +234,23 @@ controllers.controller('spaceCtrl', //$http,$routParams
           object.position.x = Math.sin( timer2 * 7 ) * 350;
           object.position.y = Math.cos( timer2 * 5 ) * 450;
           object.position.z = Math.cos( timer2 * 3 ) * 325;
+        }else if(object.name === 'falcon'){
+          object.position.x = Math.sin( timer2 * 7 ) * 150;
+          object.position.y = Math.cos( timer2 * 5 ) * 350;
+          object.position.z = Math.cos( timer2 * 3 ) * 450;
         }
+
         else{
-          object.rotation.y += 0.005;
+          //object.rotation.y += 0.005;
         }
 
       }
 
 
 
-      particleLight.position.x = Math.sin( timer * 7 ) * 300;
-      particleLight.position.y = Math.cos( timer * 5 ) * 400;
-      particleLight.position.z = Math.cos( timer * 3 ) * 300;
+      //particleLight.position.x = Math.sin( timer * 7 ) * 300;
+      //particleLight.position.y = Math.cos( timer * 5 ) * 400;
+      //particleLight.position.z = Math.cos( timer * 3 ) * 300;
 
       renderer.render( scene, camera );
 
