@@ -96,5 +96,37 @@ app.factory('service', function( $http, $q, $location, $log, config ) {
     });
     return d.promise;
   };
+  //TODO: create route
+  service.getRecipes = function( id ) {
+    var d = $q.defer();
+    var _url = url + "playground/recipe/getRecipe/" + id;
+    $http.get( _url ).success( function( data, status, headers, config ) {
+      if( data ){
+        d.resolve( data );
+      }
+    })
+      .error( function( err, code ) {
+        d.reject( err );
+        $log.error( err);
+      });
+    return d.promise;
+  };
+  //TODO: create route
+  service.insertRecipe = function( recipeObj ) {
+    var d = $q.defer();
+    var _url = url + "addRecipe";
+    $http.post( _url, recipeObj ).success( function( data, status, headers, config ) {
+      if( data ){
+        d.resolve( data );
+      }
+    })
+      .error( function( err, code ) {
+        d.reject( err );
+        $log.error( err );
+      });
+    return d.promise;
+  };
+
+
   return service;
 });

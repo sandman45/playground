@@ -44,6 +44,10 @@ playGroundApp.config(['$routeProvider',
         templateUrl: 'js/app/playground/space/space-explore/space-explore.html',
         controller: 'spaceCtrl'
       })
+      .when('/playground/recipe', {
+        templateUrl: 'js/app/playground/recipe/recipe.html',
+        controller: 'recipeCtrl'
+      })
       .otherwise({
         redirectTo: '/index'
       });

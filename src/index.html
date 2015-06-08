@@ -37,8 +37,9 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#/index">Home <span class="sr-only">(current)</span></a></li>
-        <li ng-show="model.user.loggedIn"><a href="#/playground/space">Space!</a></li>
-        <li ng-show="model.user.loggedIn"><a href="#/playground/paleo">Paleo</a></li>
+        <li ng-show="model.user.loggedIn"><a href="#/playground/space">!Space!</a></li>
+        <li ng-show="model.user.loggedIn"><a href="#/playground/paleo">!Paleo!</a></li>
+        <li ng-show="model.user.loggedIn"><a href="#/playground/recipe">!Recipe!</a></li>
         <li ng-show="model.user.loggedIn"><a href="#/playground/dotdot">!Dot Dot!</a></li>
       </ul>
 
@@ -61,7 +62,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
+        <!--<p class="pull-right"><a href="#">Back to top</a></p>-->
         <p>© 2014 Matt Sanders, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
     </footer>
 
@@ -108,6 +109,8 @@
 <script src="js/app/playground/main/main.controller.js"></script>
 <script src="js/app/playground/main/navbar.controller.js"></script>
 <script src="js/app/playground/space/space-explore/space-explore.controller.js"></script>
+<script src="js/app/playground/recipe/recipe.controller.js"></script>
+<script src="js/app/playground/recipe/add.recipe.controller.js"></script>
 
 
 <!-- DIRECTIVES-->

@@ -132,14 +132,14 @@ controllers.controller('spaceCtrl', //$http,$routParams
         [0,0,0,0,0,0,0,0,0]
       ];
 
-      // plane
-      var plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshNormalMaterial());
-      plane.overdraw = true
-      plane.name = 'gridBoard';
-      plane.rotation.z = 0;
-      plane.rotation.x = 90;
-      plane.rotation.y = 0;
-      scene.add( plane );
+      //// plane
+      //var plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshNormalMaterial());
+      //plane.overdraw = true
+      //plane.name = 'gridBoard';
+      //plane.rotation.z = 0;
+      //plane.rotation.x = 90;
+      //plane.rotation.y = 0;
+      //scene.add( plane );
 
 
 

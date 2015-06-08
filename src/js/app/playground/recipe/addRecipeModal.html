@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h3 class="modal-title">Add Recipe</h3>
+</div>
+<div class="modal-body">
+<div>TODO: finish this form</div>
+<div>Add Image</div>
+
+
+  <div class="form-group input-group-lg">
+    <label for="value">Name</label>
+    <input type="text" class="form-control" id="value" placeholder="Enter Recipe Name" ng-model="value">
+  </div>
+
+</div>
+<div>
+  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="add()">Add</button>
+  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
