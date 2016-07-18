@@ -9,9 +9,11 @@
     <link rel="shortcut icon" href="/assets/ico/favicon.ico">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link href="lib/carousel.css" rel="stylesheet">
     <link href="lib/colorpicker.css" rel="stylesheet">
     <link href="css/login.css" rel="stylesheet">
+    <link href="css/recipe.css" rel="stylesheet">
     <link rel="stylesheet" href="bower_componentss/nvd3/nv.d3.css">
     <title>Play Ground</title>
     <style type="text/css"></style>
@@ -37,7 +39,9 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#/index">Home <span class="sr-only">(current)</span></a></li>
-        <li ng-show="model.user.loggedIn"><a href="#/playground/paleo">Paleo</a></li>
+        <li ng-show="model.user.loggedIn"><a href="#/playground/space">!Space!</a></li>
+        <li ng-show="model.user.loggedIn"><a href="#/playground/paleo">!Paleo!</a></li>
+        <li ng-show="model.user.loggedIn"><a href="#/playground/recipe">!Recipe!</a></li>
         <li ng-show="model.user.loggedIn"><a href="#/playground/dotdot">!Dot Dot!</a></li>
       </ul>
 
@@ -60,7 +64,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
+        <!--<p class="pull-right"><a href="#">Back to top</a></p>-->
         <p>© 2014 Matt Sanders, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
     </footer>
 
@@ -80,6 +84,7 @@
 <script src="bower_componentss/angular-bootstrap/ui-bootstrap.min.js"></script>
 <script src="bower_componentss/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 
+<script src="bower_componentss/ng-lodash/build/ng-lodash.min.js"></script>
 
 
 <script src="lib/jquery-2.1.0.min.js"></script>
@@ -88,7 +93,8 @@
 
 <!--physics and 3D engine Libraries-->
 <script src="../../lib/dat.gui.js"></script>
-<script src="../../lib/Three.js"></script>
+<!--<script src="../../lib/Three.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
 <script src="../../lib/Detector.js"></script>
 <script src="../../lib/Stats.js"></script>
 <script src="../../lib/smoothie.js"></script>
@@ -105,6 +111,10 @@
 <script src="js/app/playground/paleo/paleo.controller.js"></script>
 <script src="js/app/playground/main/main.controller.js"></script>
 <script src="js/app/playground/main/navbar.controller.js"></script>
+<script src="js/app/playground/space/space-explore/space-explore.controller.js"></script>
+<script src="js/app/playground/recipe/recipe.controller.js"></script>
+<script src="js/app/playground/recipe/add.recipe.controller.js"></script>
+
 
 <!-- DIRECTIVES-->
 <script src="js/app/playground/directive/d3BubbleTesting.js"></script>
@@ -114,10 +124,12 @@
 
 <!-- SERVICES -->
 <script src="js/app/playground/service/playground.service.js"></script>
+<script src="js/app/playground/service/recipe.model.service.js"></script>
 <script src="js/app/playground/utils/playground.utils.service.js"></script>
 <script src="js/app/playground/model/model.js"></script>
 <script src="js/app/playground/config/config.service.js"></script>
 <script src="js/app/playground/paleo/bmi.categories.service.js"></script>
+<script src="js/app/playground/space/space-explore/space-loader.service.js"></script>
 
 <script src="lib/angular-bootstrap-colorpicker.js"></script>
 

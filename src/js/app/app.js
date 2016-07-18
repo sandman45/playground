@@ -6,7 +6,8 @@ var playGroundApp = angular.module('playGroundApp', [
   'ngRoute',
   'controllers',
   'colorpicker.module',
-  'nvd3'
+  'nvd3',
+  'ngLodash'
 ]);
 
 playGroundApp.config(['$routeProvider',
@@ -39,6 +40,14 @@ playGroundApp.config(['$routeProvider',
       .when('/contact', {
         templateUrl: 'views/contact.html'
         //secure:false
+      })
+      .when('/playground/space', {
+        templateUrl: 'js/app/playground/space/space-explore/space-explore.html',
+        controller: 'spaceCtrl'
+      })
+      .when('/playground/recipe', {
+        templateUrl: 'js/app/playground/recipe/recipe.html',
+        controller: 'recipeCtrl'
       })
       .otherwise({
         redirectTo: '/index'

@@ -1,0 +1,42 @@
+<div class="modal-header">
+  <h3 class="modal-title">Add Recipe</h3>
+</div>
+<div class="modal-body">
+
+  <div class="anchor dwo-photo-button-right col-xs-6" ng-click="capture()">
+    <i class="fa fa-camera fa-4x"></i>
+    <input id="cameraCapture" style="display: none;" class="input-override" type="file" name="image" accept="image/*" capture="camera" hidden>
+    </input>
+
+  </div>
+
+
+  <div class="form-group input-group-lg">
+    <img ng-src="{{image}}" width="100%" height="auto">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" placeholder="Name" ng-model="recipe.name">
+
+    <label for="desc">Description</label>
+    <textarea type="text" rows="3" class="form-control" id="desc" placeholder="Description" ng-model="recipe.description"></textarea>
+
+    <label for="dir">Directions</label>
+    <textarea type="text" rows="3" class="form-control" id="dir" placeholder="Directions" ng-model="recipe.directions"></textarea>
+
+    <label for="dir">Ingredients</label>
+    <div ng-click="addIngredient()"><i class="fa fa-plus fa-3x"></i></div>
+    <div ng-repeat="ingredient in recipe.ingredients">
+      <div class="ingredient-element">
+        <input type="text" class="form-input" id="ing" placeholder="Ingredients" ng-model="ingredient.name">
+        <div class="form-input-btn" ng-click="removeIngredient($index)"><i class="fa fa-minus fa-3x"></i></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div>
+  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="add()">Add</button>
+  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

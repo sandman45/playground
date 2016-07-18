@@ -7,7 +7,7 @@ app.factory('service', function( $http, $q, $location, $log, config ) {
  var service = {};
  //var url = "http://107.170.178.211:8081/"
  //var url = "http://localhost:8081/"
-  var url = config.couch.url;
+  var url = config.couch.urlLocal;
   service.login = function( data ){
     var d = $q.defer();
     var _url = url + "login";
@@ -96,5 +96,37 @@ app.factory('service', function( $http, $q, $location, $log, config ) {
     });
     return d.promise;
   };
+
+  service.getRecipes = function( id ) {
+    var d = $q.defer();
+    var _url = url + "playground/recipe/getRecipe/" + id;
+    $http.get( _url ).success( function( data, status, headers, config ) {
+      if( data ){
+        d.resolve( data );
+      }
+    })
+      .error( function( err, code ) {
+        d.reject( err );
+        $log.error( err);
+      });
+    return d.promise;
+  };
+
+  service.insertRecipe = function( recipeObj ) {
+    var d = $q.defer();
+    var _url = url + "playground/recipe/insertRecipe";
+    $http.post( _url, recipeObj ).success( function( data, status, headers, config ) {
+      if( data ){
+        d.resolve( data );
+      }
+    })
+      .error( function( err, code ) {
+        d.reject( err );
+        $log.error( err );
+      });
+    return d.promise;
+  };
+
+
   return service;
 });
