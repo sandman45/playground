@@ -1,6 +1,10 @@
 <h2>{{title}}</h2>
 <button class="btn btn-default btn-lg" ng-click="open()">Weigh In</button>
 <button class="btn btn-default btn-lg" ng-click="openBMI()">Calculate BMI</button>
+
+<!--<button class="btn btn-default btn-lg" ng-click="">All Time</button>-->
+
+
 <!--<section>-->
   <!--<div class="btn-group" data-ng-repeat="button in buttons">-->
     <!--<button type="button" class="btn btn-default btn-success" data-ng-click="button.func(button)">{{button.label}}</button>-->
@@ -10,7 +14,16 @@
   <h4>Overall Average Weight: {{average}}</h4>
   <h4>Current BMI: {{bmi}}</h4>
 </div>
+
+
 <nvd3 id="mainGraph" options="lineChartOptions" data="lineChartData"></nvd3>
+
+<div>
+  <h4>Chart Options</h4>
+  <button class="btn btn-default btn-lg active" ng-click="getAllData()" selected>Lifetime</button>
+  <button class="btn btn-default btn-lg" ng-click="trimData()">Last 6 Months</button>
+</div>
+
 <!--<nvd3 options="options1" data="data1"></nvd3>-->
 <!--<nvd3 options="options2" data="data2"></nvd3>-->
 <!--<nvd3 options="options3" data="data3"></nvd3>-->
