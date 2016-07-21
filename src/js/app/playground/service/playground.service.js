@@ -5,9 +5,7 @@ var app = angular.module('playGroundApp');
 
 app.factory('service', function( $http, $q, $location, $log, config ) {
  var service = {};
- //var url = "http://107.170.178.211:8081/"
- //var url = "http://localhost:8081/"
-  var url = config.couch.urlLocal;
+  var url = config.api.urlLocal;
   service.login = function( data ){
     var d = $q.defer();
     var _url = url + "login";

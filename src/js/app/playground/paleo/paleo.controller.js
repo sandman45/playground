@@ -4,6 +4,15 @@
 controllers.controller('paleoCtrl',
   function ($scope, $q, $window, service, model, utils, $modal, $log) {
 
+    var dataRanges = {
+      range1:'lifetime',
+      range2:'6months',
+      range3:'3months',
+      range4:'1month'
+    };
+
+    var selectedRange = dataRanges.range1;
+
     $scope.model = model;
     $scope.title = "Paleo Chart";
     $scope.lineChartData = [];
@@ -59,7 +68,7 @@ controllers.controller('paleoCtrl',
     $scope.dataFormat = "ddd MMM DD YYYY";
     $scope.init = function(){
       getData().then(function(data){
-        prepareChartData(data);
+        prepareChartData(data,selectedRange);
       }, function(err){
         $log.error( err );
       });
@@ -86,6 +95,27 @@ controllers.controller('paleoCtrl',
         temp.sort( function( a, b ) {
           return a.x - b.x;
         });
+
+        //trim data...
+        if(selectedRange === dataRanges.range2){
+          var todaysDate = moment();
+          var start = moment().subtract(6,'months');
+          var dateBoundaries = {start:start, end:todaysDate};
+          var trimmed = [];
+
+          console.log('END - ' + todaysDate.format('Do MMM YYYY'));
+          console.log('START - ' +start.format('Do MMM YYYY'));
+
+          _.each(temp,function(item){
+            // console.log(moment(item.x).format('Do MMM YYYY'));
+            if(moment(item.x).utc() >= moment(dateBoundaries.start).utc() &&  moment(item.x).utc() <=  moment(dateBoundaries.end).utc()){
+              trimmed.push(item);
+            }
+          });
+
+          temp = trimmed;
+        }
+
         average.push({ label:"Average", x: temp[0].x, y: temp[0].y });
         for(var i = 1; i < temp.length-1; i++ ){
           var avg = utils.approxRollingAverage( temp, i );
@@ -108,7 +138,6 @@ controllers.controller('paleoCtrl',
         ];
         $scope.average = utils.calculateAverage(data).toFixed(2);
       }
-
 
     };
 
@@ -380,6 +409,17 @@ controllers.controller('paleoCtrl',
         $log.info('Modal dismissed');
         $scope.init();
       });
+    };
+
+
+    $scope.getAllData = function(){
+      selectedRange = dataRanges.range1;
+      $scope.init();
+    };
+
+    $scope.trimData = function(){
+      selectedRange = dataRanges.range2;
+      $scope.init();
     };
 
 
