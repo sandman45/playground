@@ -28,6 +28,11 @@ playGroundApp.config(['$routeProvider',
         controller: 'dotDotCtrl'
         //secure:true
       })
+      .when('/playground/socket', {
+        templateUrl: 'js/app/playground/socket/socket.html',
+        controller: 'socketCtrl'
+        //secure:true
+      })
       .when('/playground/paleo', {
         templateUrl: 'js/app/playground/paleo/paleo-main.html',
         controller: 'paleoCtrl'

@@ -1,7 +1,7 @@
 /**
  * Created by matthew.sanders on 2/23/15.
  */
-angular.module('playGroundApp').controller('mainCtrl', function ($rootScope, $scope, $log, $location, service, model) {
+angular.module('playGroundApp').controller('mainCtrl', function ($rootScope, $scope, $log, $location, service, model, socketService) {
   $scope.model = model;
   $scope.myInterval = 5000;
   var slides = $scope.slides = [];
@@ -27,4 +27,19 @@ angular.module('playGroundApp').controller('mainCtrl', function ($rootScope, $sc
   $scope.createAccount = function(){
     $location.path('/login');
   };
+
+
+  $scope.socket = io;
+  // console.log('connected to sockets!');
+
+
+  $scope.getUsers = function () {
+    socketService.getUsers().then(function(data){
+      $scope.users = data;
+    });
+  };
+
+  $scope.getUsers();
+
+
 });

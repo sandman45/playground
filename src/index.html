@@ -43,6 +43,7 @@
         <li ng-show="model.user.loggedIn"><a href="#/playground/paleo">!Paleo!</a></li>
         <li ng-show="model.user.loggedIn"><a href="#/playground/recipe">!Recipe!</a></li>
         <li ng-show="model.user.loggedIn"><a href="#/playground/dotdot">!Dot Dot!</a></li>
+        <li ng-show="model.user.loggedIn"><a href="#/playground/socket">!Sockets!</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
@@ -72,7 +73,6 @@
 
 <!-- SOCKET IO -->
 <script src="http://localhost:8081/socket.io/socket.io.js"></script>
-
 <!-- LIBRARIES --->
 
 <!-- nvd3 (angular d3 libraries) -->
@@ -114,6 +114,7 @@
 <script src="js/app/playground/space/space-explore/space-explore.controller.js"></script>
 <script src="js/app/playground/recipe/recipe.controller.js"></script>
 <script src="js/app/playground/recipe/add.recipe.controller.js"></script>
+<script src="js/app/playground/socket/socket.controller.js"></script>
 
 
 <!-- DIRECTIVES-->
@@ -125,6 +126,7 @@
 <!-- SERVICES -->
 <script src="js/app/playground/service/playground.service.js"></script>
 <script src="js/app/playground/service/recipe.model.service.js"></script>
+<script src="js/app/playground/service/socket.service.js"></script>
 <script src="js/app/playground/utils/playground.utils.service.js"></script>
 <script src="js/app/playground/model/model.js"></script>
 <script src="js/app/playground/config/config.service.js"></script>
