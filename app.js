@@ -76,7 +76,7 @@ fs.readdirSync(__dirname + '/routes').forEach(function(file) {
 
 //Load Scheduled Tasks
 fs.readdirSync(__dirname + '/schedule').forEach(function(file){
-  require('./schedule/' + file)(app,schedule);
+  // require('./schedule/' + file)(app,schedule);
 });
 
 //Socket Stuff!!!
