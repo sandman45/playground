@@ -82,7 +82,8 @@ fs.readdirSync(__dirname + '/schedule').forEach(function(file){
 //Socket Stuff!!!
 io.sockets.on('connection', function(socket){
   console.log('User Connected:' + socket.id);
-  
+  //get user info?
+  socket.user = {name:'user 2'};
   io.emit('user-connected',socket.id);
   
   fs.readdirSync(__dirname + '/socket-handlers').forEach(function(file){

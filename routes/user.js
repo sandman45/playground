@@ -69,7 +69,8 @@ module.exports = function(app){
       postal: req.body.postal,
       state: req.body.state,
       userid: req.body.userid,
-      username: req.body.username
+      username: req.body.username,
+      created: moment.utc()
     };
 
     couchService.insert( doc, req.body.email, 0 ).then( function( d ){
