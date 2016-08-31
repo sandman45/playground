@@ -6,11 +6,11 @@ var fs = require('fs');
 var _ = require('underscore');
 var http = require('http');
 var express = require('express');
+var bodyParser = require('body-parser');
 var schedule = require('node-schedule');
 var session = require('express-session');
     connect = require('connect');
     ConnectCouchDB = require('connect-couchdb')(session);
-var socket;
 
 
 /**
@@ -27,7 +27,8 @@ var allowCrossDomain = function(req,res,next){
 };
 
 var app = express();
-var server = http.createServer(app);
+var server = http.Server(app);
+var io = require('socket.io').listen(server);
 
 var store = new ConnectCouchDB({
   //Name of Database for session storage
@@ -40,33 +41,11 @@ var store = new ConnectCouchDB({
 });
 
 
-var io = require('socket.io').listen(server);
-    io.on('connection', function (socket) {
-      console.log('a user connected');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
-      socket.on('disconnect',function(){
-        console.log('user disconnected');
-      });
-      socket.on('gameCommand',function(command){
-        console.log('command: ' + command);
-//        socket.emit('gameCommand',command);
-        socket.broadcast.emit('gameCommand',command);
-      });
-      socket.emit('news', { hello: 'user!' });
 
-      socket.on('chat message', function(msg){
-        console.log('message: ' + msg);
-      });
-
-      socket.on('my other event', function (data) {
-        console.log(data);
-      });
-    });
-
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.multipart());
-app.use(express.cookieParser());
+// app.use(express.cookieParser());
 app.use(session({
   secret:'myAmazingSecret',
   store:store,
@@ -74,7 +53,7 @@ app.use(session({
 }));
 app.use(express.static('src'));
 app.use(allowCrossDomain);
-app.use(app.router);
+// app.use(app.router);
 
 app.options('/*', function(req, res){
   res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
@@ -91,13 +70,25 @@ app.all("/playground/*", securityCheck, function(req, res, next){
 
 // Load all other routes
 fs.readdirSync(__dirname + '/routes').forEach(function(file) {
-  require('./routes/' + file)(app,socket);
+  require('./routes/' + file)(app);
 });
 
 
 //Load Scheduled Tasks
 fs.readdirSync(__dirname + '/schedule').forEach(function(file){
   require('./schedule/' + file)(app,schedule);
+});
+
+//Socket Stuff!!!
+io.sockets.on('connection', function(socket){
+  console.log('User Connected:' + socket.id);
+  //get user info?
+  socket.user = {name:'user 2'};
+  io.emit('user-connected',socket.id);
+  
+  fs.readdirSync(__dirname + '/socket-handlers').forEach(function(file){
+    require('./socket-handlers/' + file).listen(io,socket);
+  });
 });
 
 var port = process.env.PORT || 8081;
@@ -118,7 +109,7 @@ server.listen(port, function() {
 function securityCheck(req, res, next) {
   store.get(req.session.id, function (err, session) {
     if (err) {
-      res.send(500, {message: err});
+      res.status(500).send({message: err});
     }
     if (session) {
       if (_.has(session, 'username')) {
@@ -128,13 +119,13 @@ function securityCheck(req, res, next) {
       } else {
         console.log('Forbidden');
         req.session = null;
-        res.send(403, {message: 'Forbidden'});
+        res.status(403).send({message: 'Forbidden'});
       }
     }
     else {
       console.log('Forbidden');
       req.session = null;
-      res.send(403, {message: 'Forbidden'});
+      res.status(403).send({message: 'Forbidden'});
     }
   });
 }

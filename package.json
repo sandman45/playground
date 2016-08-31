@@ -1,27 +1,28 @@
 {
-  "name": "Attachment-Uploader",
+  "name": "Playground",
   "version": "0.0.24",
   "engines": {
-    "node": "0.10.x",
-    "npm": "1.2.x"
+    "node": "4.3.2",
+    "npm": "2.14.12"
   },
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/VivintSolar/Attachment-Uploader.git"
+    "url": "https://github.com/sandman45/playground.git"
   },
   "scripts": {
     "start": "node server/js/app"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "config": "~0.4.35",
     "connect": "^3.3.4",
     "connect-couchdb": "^1.0.0",
     "crypto-js": "^3.1.2-5",
-    "express": "~3.1.2",
+    "express": "^4.10.2",
     "express-session": "^1.10.3",
     "forever": "^0.11.1",
-    "lodash": "^3.9.3",
+    "lodash": "^3.10.1",
     "moment": "~2.1.0",
     "multer": "^1.1.0",
     "nano": "^6.0.2",
@@ -29,7 +30,7 @@
     "pathfinding": "git://github.com/schteppe/PathFinding3D.js.git#master",
     "q": "~0.9.7",
     "request": "^2.34.0",
-    "socket.io": "^0.9.17",
+    "socket.io": "^1.4.8",
     "underscore": "~1.5.2",
     "xml2js": "^0.4.2"
   }

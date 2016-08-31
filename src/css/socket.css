@@ -1,0 +1,16 @@
+.socket-container{
+    display: flex;
+    padding: 12px;
+    width: 100%;
+    height: 300px;
+}
+
+.socket-messages{
+    flex: 0 0 50%;
+    background-color: ghostwhite;
+}
+
+.socket-command{
+    flex:1;
+    background-color: darkgray;
+}

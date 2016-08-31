@@ -2,13 +2,20 @@
  * Created by matthew.sanders on 6/17/14.
  */
 
+// var socketio = require('socket.io');
 
-module.exports = function(app,socket) {
-  app.post('/testNews', function(req,res){
+module.exports = function(app) {
 
-    res.send(200,'hi');
+  // var io = socketio.listen(app,);
+
+  app.get('/getUserList', function(req,res){
+    var users = [];
+
+    // var users = io.of('/users');
+
+    res.status(200).send(users);
   });
   app.get('/alive',function(req,res,next){
-    res.send(200,{status:'Alive!'});
+    res.status(200).send({status:'Alive!'});
   });
-}
+};
