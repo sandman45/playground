@@ -32,6 +32,7 @@ controllers.controller('loginCtrl', ['$scope', 'service', '$location', '$modal',
     };
 
     $scope.login = function(){
+      var message;
       var userObj = {
         email:$scope.email,
         password:$scope.password
@@ -48,17 +49,32 @@ controllers.controller('loginCtrl', ['$scope', 'service', '$location', '$modal',
             $location.path('/playground/paleo');
           }, function( err ){
             $log.error( err );
-            $scope.alerts.push( { type:'danger', msg:err.message } );
+            if(err){
+              message = err.message;
+            }else{
+              message = err;
+            }
+            $scope.alerts.push( { type:'danger', msg:message } );
             //show alert
           })
         }else{
           $log.error( err );
-          $scope.alerts.push( { type:'danger', msg:err.message } );
+          if(err){
+            message = err.message;
+          }else{
+            message = err;
+          }
+          $scope.alerts.push( { type:'danger', msg:message } );
         }
         model.user = data;
       },function( err ) {
         $log.error( err );
-        $scope.alerts.push( { type:'danger', msg:err.message } );
+        if(err){
+          message = err.message;
+        }else{
+          message = err;
+        }
+        $scope.alerts.push( { type:'danger', msg:message } );
       });
     };
   }]);
