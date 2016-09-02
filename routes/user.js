@@ -1,7 +1,7 @@
 /**
  * Created by matthew.sanders on 2/19/15.
  */
-
+var moment = require('moment');
 var CouchService = require('../routeUtil/couchService');
 var couchService = new CouchService('users');
 var crypto = require('crypto-js');

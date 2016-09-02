@@ -11,6 +11,8 @@
   "port" : 8081,
   "couch" : {
     "url" : "localhost",
-    "port" : 5984
+    "port" : 5984,
+    "user":"pg-admin",
+    "secret":"sandman"
   }
 }
