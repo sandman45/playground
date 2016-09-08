@@ -83,9 +83,10 @@ controllers.controller('socketCtrl', ['$scope','$q','$window','model',
     //D3 stuff move to another file
 
     $scope.initParticles = function(){
-
-      var width = Math.max(960, innerWidth),
-        height = Math.max(500, innerHeight);
+      var inWidth = document.getElementById("particleFun").clientWidth;
+      var inHeight = document.getElementById("particleFun").clientHeight;
+      var width = Math.max(960, inWidth),
+          height = Math.max(500, inHeight);
 
       var x1 = width / 2,
         y1 = height / 2,
@@ -179,7 +180,7 @@ controllers.controller('socketCtrl', ['$scope','$q','$window','model',
           }
         };
     };
-    
+
     $scope.initParticles();
     $scope.otherParticles();
 
