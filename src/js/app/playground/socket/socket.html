@@ -7,7 +7,7 @@
 
 <button ng-click="getConnectedUsers()">Show Users</button>
 
-<div ng-repeat="user in users">
+<div ng-repeat="user in users track by $index">
   {{user}}
 </div>
 
