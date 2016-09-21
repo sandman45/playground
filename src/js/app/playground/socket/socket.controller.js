@@ -37,7 +37,7 @@ controllers.controller('socketCtrl', ['$scope','$q','$window','model','particles
       if(_.indexOf($scope.users,_id)<0){
         $scope.users.push(_id);
         if(!$scope.particlesInit){
-          $scope.initParticles();
+          $scope.initParticles(_id);
         }
         $scope.$digest();
       }
@@ -78,12 +78,12 @@ controllers.controller('socketCtrl', ['$scope','$q','$window','model','particles
       $scope.$digest();
     });
 
-    $scope.initParticles = function(){
-      $scope.particlesInit = particles.init($scope);
+    $scope.initParticles = function(id){
+      $scope.particlesInit = particles.init($scope,id);
     };
 
-    $scope.otherParticles = function(){
-       particles.addParticle($scope);
+    $scope.otherParticles = function(id){
+       particles.addParticle($scope,id);
     };
 
 
