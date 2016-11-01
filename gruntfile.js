@@ -1,6 +1,7 @@
 /**
  * Created by matthew.sanders on 2/24/14.
  */
+// TODO: this isnt working right now need to fix it
 module.exports = function(grunt){
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
