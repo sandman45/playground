@@ -1,13 +1,13 @@
 /**
  * Created by matthew.sanders on 2/19/15.
  */
-var couchConfig = require('config').couch;
-var nano = require('nano')('http://' + couchConfig.user + ':' + couchConfig.secret + '@' + couchConfig.url+':'+couchConfig.port);
-console.log(couchConfig.url);
-var q = require('q');
-var _ = require('underscore');
+const fullUrl = `http://${process.env.COUCH_USER}:${process.env.COUCH_SECRET}@${process.env.COUCH_HOST}:${process.env.COUCH_PORT}`;
+const nano = require('nano')(fullUrl);
+console.log(fullUrl);
+const q = require('q');
+const _ = require('underscore');
 
-var CouchService = (function(){
+const CouchService = (function(){
 
   /**
    * CouchService
@@ -17,7 +17,7 @@ var CouchService = (function(){
   function CouchService(databaseName){
     this.db_name = databaseName;
     this.db = nano.use(this.db_name);
-  };
+  }
 
   /**
    * insert
@@ -78,6 +78,25 @@ var CouchService = (function(){
           deferred.resolve(data);
         }
       });
+    }
+    return deferred.promise;
+  };
+
+  /**
+   * view
+   * @param designName
+   * @param viewName
+   * @param key
+   * @returns {promise|*|promise.promise|jQuery.promise|d.promise|Q.promise}
+   */
+  CouchService.prototype.view = function (designName, viewName, key) {
+    var deferred = q.defer();
+    const keyParams = {
+      key: key,
+      include_docs: true,
+    };
+    if (key) {
+      this.db.view(designName, viewName, keyParams, this.responsePromise(deferred, 'view'));
     }
     return deferred.promise;
   };
@@ -149,7 +168,7 @@ var CouchService = (function(){
           deferred.resolve(body);
         }
       }
-    }
+    };
   };
   return CouchService;
 })();

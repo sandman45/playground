@@ -20,10 +20,10 @@ module.exports = function(app){
           }
         }
       });
-      res.send( 200, data );
+      res.status(200).send( data );
     })
       .fail( function( err ) {
-        res.send( err.statusCode, err );
+        res.status(err.statusCode).send( err );
       });
   });
   /**
@@ -41,11 +41,11 @@ module.exports = function(app){
     };
 
     couchService.insert( doc, id, 0 ).then( function( d ){
-      res.send( 200, d );
+      res.status(200).send( d );
     })
       .fail(function( err ){
         console.log( err );
-        res.send( err.statusCode, err );
+        res.status(err.statusCode).send( err );
       });
   });
-}
+};
