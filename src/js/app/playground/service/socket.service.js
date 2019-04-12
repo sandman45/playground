@@ -5,7 +5,7 @@ var app = angular.module('playGroundApp');
 
 app.factory('socketService', function( $http, $q, $location, $log, config ) {
   var service = {};
-  var url = config.api.urlLocal;
+  var url = config.api.url;
   service.getUsers = function( data ){
     var d = $q.defer();
     var _url = url + 'getUserList';
