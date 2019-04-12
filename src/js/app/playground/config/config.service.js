@@ -5,7 +5,7 @@ var app = angular.module('playGroundApp');
 
 app.service('config', function() {
   this.api = {
-     // url: 'http://162.243.203.80:8081/',
+     // url: 'http://ec2-52-13-28-255.us-west-2.compute.amazonaws.com:3000/',
     url: 'http://localhost:3000/'
   };
 });
