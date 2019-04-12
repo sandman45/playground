@@ -10,6 +10,7 @@ const uuid = require('uuid');
 
 module.exports = function(app){
   app.post('/login', function( req, res, next ){
+    console.log(`/login/:id => ${req.body.email}`);
     if(req.body.email && req.body.email.length>0){
       couchService.view('getUserByEmail', 'get-user-by-email', req.body.email).then(function(data){
         console.log(`user data: ${JSON.stringify(data)}`);
@@ -40,11 +41,13 @@ module.exports = function(app){
   });
 
   app.get('/logout', function( req, res, next ){
+    console.log(`/logout => ${req.session.email}`);
      req.session = null;
      res.status(200).send('success');
   });
 
   app.get('/playground/user/:id', function( req, res, next ){
+    console.log(`/playground/user/:id => ${req.params.id}`);
     couchService.view('getUserByEmail', 'get-user-by-email', req.params.id === "refresh" ? req.session.email : req.params.id).then( function( d ){
       res.status( 200 ).send(d);
     })
