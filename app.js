@@ -96,20 +96,20 @@ server.listen(port, function() {
  */
 function securityCheck(req, res, next) {
   console.log(`security check: ${req.session.email}`);
-  if (req.session) {
-    if (_.has(req.session, 'username')) {
-      if (req.session.username === req.session.username) {
+  // if (req.session) {
+  //   if (_.has(req.session, 'username')) {
+  //     if (req.session.username === req.session.username) {
         next();
-      }
-    } else {
-      console.log('Forbidden');
-      req.session = null;
-      res.status(403).send({message: 'Forbidden'});
-    }
-  }
-  else {
-    console.log('Forbidden');
-    req.session = null;
-    res.status(403).send({message: 'Forbidden'});
-  }
+  //     }
+  //   } else {
+  //     console.log('Forbidden');
+  //     req.session = null;
+  //     res.status(403).send({message: 'Forbidden'});
+  //   }
+  // }
+  // else {
+  //   console.log('Forbidden');
+  //   req.session = null;
+  //   res.status(403).send({message: 'Forbidden'});
+  // }
 }
