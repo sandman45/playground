@@ -12,7 +12,7 @@ module.exports = function(app){
   app.post('/login', function( req, res, next ){
     if(req.body.email && req.body.email.length>0){
       couchService.view('getUserByEmail', 'get-user-by-email', req.body.email).then(function(data){
-        console.log(`user data: ${data}`);
+        console.log(`user data: ${JSON.stringify(data)}`);
         if(data.password === crypto.SHA3(req.body.password).toString()){
           //set session
           if(req.session){
@@ -45,9 +45,9 @@ module.exports = function(app){
   });
 
   app.get('/playground/user/:id', function( req, res, next ){
-      couchService.get( req.params.id === "refresh" ? req.session.email : req.params.id ).then( function( d ){
-        res.status( 200 ).send(d);
-      })
+    couchService.view('getUserByEmail', 'get-user-by-email', req.params.id === "refresh" ? req.session.email : req.params.id).then( function( d ){
+      res.status( 200 ).send(d);
+    })
       .fail(function( err ){
         res.status( err.statusCode ).send( err );
       });
