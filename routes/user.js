@@ -6,24 +6,28 @@ var CouchService = require('../routeUtil/couchService');
 var couchService = new CouchService('users');
 var crypto = require('crypto-js');
 
+const uuid = require('uuid');
+
 module.exports = function(app){
   app.post('/login', function( req, res, next ){
     if(req.body.email && req.body.email.length>0){
-      couchService.get(req.body.email).then(function(data){
-        console.log(data);
+      couchService.view('getUserByEmail', 'get-user-by-email', req.body.email).then(function(data){
+        console.log(`user data: ${JSON.stringify(data)}`);
         if(data.password === crypto.SHA3(req.body.password).toString()){
           //set session
-          req.session.username = req.body.email;
-          req.session.firstname = data.firstname;
-          req.session.lastname = data.lastname;
-          req.session.email = data.email;
+          if(req.session){
+            req.session.username = req.body.email;
+            req.session.firstname = data.firstname;
+            req.session.lastname = data.lastname;
+            req.session.email = data.email;
+          }
           res.status(200).send('Success');
         }else{
           res.status(401).send({message:'Username or Password incorrect'});
         }
       })
       .fail(function(err){
-        console.log(err);
+        console.log(`fail: ${err}`);
           if(err.message === 'missing'){
             res.status(err.statusCode).send({message:'Username or Password incorrect'});
           }else{
@@ -36,19 +40,19 @@ module.exports = function(app){
   });
 
   app.get('/logout', function( req, res, next ){
-     req.session.destroy();
+     req.session = null;
      res.status(200).send('success');
   });
 
   app.get('/playground/user/:id', function( req, res, next ){
-      couchService.get( req.params.id === "refresh" ? req.session.email : req.params.id ).then( function( d ){
-        res.status( 200 ).send(d);
-      })
+    couchService.view('getUserByEmail', 'get-user-by-email', req.params.id === "refresh" ? req.session.email : req.params.id).then( function( d ){
+      res.status( 200 ).send(d);
+    })
       .fail(function( err ){
         res.status( err.statusCode ).send( err );
       });
   });
-  
+
   /**
    * createUser
    * this will create a new document in couch.
@@ -56,6 +60,8 @@ module.exports = function(app){
    */
   app.post( '/createUser', function( req, res, next ){
     console.log( 'createUser' );
+    // create UUID for user
+    const userId = uuid();
     var doc = {
       address_1: req.body.address_1,
       address_2: req.body.address_2,
@@ -68,13 +74,13 @@ module.exports = function(app){
       phone: req.body.phone,
       postal: req.body.postal,
       state: req.body.state,
-      userid: req.body.userid,
+      userid: userId,
       username: req.body.username,
       created: moment.utc()
     };
 
-    couchService.insert( doc, req.body.email, 0 ).then( function( d ){
-      console.log("user created: " + d);
+    couchService.insert( doc, userId, 0 ).then( function( d ){
+      console.log("user created: " + JSON.stringify(d));
       res.status( 200 ).send( d );
     })
     .fail(function( err ){

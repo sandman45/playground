@@ -1,16 +1,15 @@
 /**
  * Created by matthew.sanders on 3/13/14.
  */
-var config = require('config');
-var fs = require('fs');
-var _ = require('underscore');
-var http = require('http');
-var express = require('express');
-var bodyParser = require('body-parser');
-var schedule = require('node-schedule');
-var session = require('express-session');
-    connect = require('connect');
-    ConnectCouchDB = require('connect-couchdb')(session);
+require('dotenv').config();
+const fs = require('fs');
+const _ = require('underscore');
+const http = require('http');
+const express = require('express');
+const bodyParser = require('body-parser');
+const schedule = require('node-schedule');
+
+const cookieSession = require('cookie-session');
 
 
 /**
@@ -19,38 +18,24 @@ var session = require('express-session');
  * @param res
  * @param next
  */
-var allowCrossDomain = function(req,res,next){
+const allowCrossDomain = function(req,res,next){
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 };
 
-var app = express();
-var server = http.Server(app);
-var io = require('socket.io').listen(server);
-
-var store = new ConnectCouchDB({
-  //Name of Database for session storage
-  name: 'sessions',
-  //How often  expired sessions should be cleaned up
-  host:config.couch.url,
-  reapInterval: config.session.reapInterval,
-  compactInterval:config.session.compactInterval,
-  setThrottle: config.session.throttle
-});
-
+const app = express();
+const server = http.Server(app);
+const io = require('socket.io').listen(server);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-
-// app.use(express.cookieParser());
-app.use(session({
-  secret:'myAmazingSecret',
-  store:store,
-  cookie:{maxAge:config.session.cookie.maxAge}
+app.use(cookieSession({
+  secret: process.env.SESSION_SECRET,
 }));
+
 app.use(express.static('src'));
 app.use(allowCrossDomain);
 // app.use(app.router);
@@ -85,14 +70,17 @@ io.sockets.on('connection', function(socket){
   //get user info?
   socket.user = {name:'user 2'};
   io.emit('user-connected',socket.id);
-  
+
   fs.readdirSync(__dirname + '/socket-handlers').forEach(function(file){
     require('./socket-handlers/' + file).listen(io,socket);
   });
 });
 
-var port = process.env.PORT || 8081;
-var env = process.env.NODE_ENV || 'default';
+
+
+const port = process.env.PORT || 8081;
+const env = process.env.NODE_ENV || 'local';
+
 server.listen(port, function() {
   console.log('PORT: ', port, ' ENV: ', env);
 });
@@ -107,25 +95,20 @@ server.listen(port, function() {
  * @param next
  */
 function securityCheck(req, res, next) {
-  store.get(req.session.id, function (err, session) {
-    if (err) {
-      res.status(500).send({message: err});
-    }
-    if (session) {
-      if (_.has(session, 'username')) {
-        if (session.username == req.session.username) {
-          next();
-        }
-      } else {
-        console.log('Forbidden');
-        req.session = null;
-        res.status(403).send({message: 'Forbidden'});
+  if (req.session) {
+    if (_.has(req.session, 'username')) {
+      if (req.session.username === req.session.username) {
+        next();
       }
-    }
-    else {
+    } else {
       console.log('Forbidden');
-      req.session = null;
-      res.status(403).send({message: 'Forbidden'});
+      // req.session = null;
+      // res.status(403).send({message: 'Forbidden'});
     }
-  });
+  }
+  else {
+    console.log('Forbidden');
+    // req.session = null;
+    // res.status(403).send({message: 'Forbidden'});
+  }
 }
