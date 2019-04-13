@@ -33,7 +33,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieSession({
-  secret: process.env.SESSION_SECRET,
+    name: 'session',
+    keys: [process.env.SESSION_SECRET],
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
 app.use(express.static('src'));
