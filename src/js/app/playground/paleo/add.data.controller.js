@@ -1,8 +1,8 @@
 /**
  * Created by matthew.sanders on 2/24/15.
  */
-controllers.controller('addDataCtrl', ['$scope', '$modalInstance', 'service', '$location', '$log', 'utils',
-  function($scope, $modalInstance, service, $location, $log, utils) {
+controllers.controller('addDataCtrl', ['$scope', '$modalInstance', 'service', '$location', '$log', 'utils', 'model',
+  function($scope, $modalInstance, service, $location, $log, utils, model) {
 
     $scope.alerts = [];
     $scope.dt = moment();
@@ -15,7 +15,7 @@ controllers.controller('addDataCtrl', ['$scope', '$modalInstance', 'service', '$
 
       $log.info($scope.dt);
       $log.info($scope.value);
-      service.insertPaleoData( { datetime: moment($scope.dt).unix(), value: $scope.value } ).then( function ( data ) {
+      service.insertPaleoData( { datetime: moment($scope.dt).unix(), value: $scope.value, userid: model.user._id } ).then( function ( data ) {
         $log.info(data);
         $modalInstance.dismiss();
       }, function( err ) {
