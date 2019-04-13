@@ -56,6 +56,8 @@ app.factory('service', function( $http, $q, $location, $log, config ) {
     $http.get( _url ).success( function( data, status, headers, config ) {
       if( data ){
         d.resolve( data );
+      } else {
+          $log.info(`No Results for id = ${id}`);
       }
     })
     .error( function( err, code ) {
