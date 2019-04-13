@@ -2,19 +2,19 @@
  * Created by matthew.sanders on 2/19/15.
  */
 
-var CouchService = require('../routeUtil/couchService');
-var couchService = new CouchService('paleo_results');
-var _ = require('underscore');
+const CouchService = require('../routeUtil/couchService');
+const couchService = new CouchService('paleo_results');
+const _ = require('underscore');
 module.exports = function(app){
   /**
    * paleo-results
    */
   app.get('/playground/paleo-results/:id', function( req, res, next ) {
     couchService.get().then( function ( d ) {
-      var data = [];
+      const data = [];
       d.forEach( function (doc) {
-        if( _.has( doc.doc, "userid" ) ) {
-          if( req.session.username === doc.doc.userid ) {
+        if( _.has( doc.doc, 'userid' ) ) {
+          if( req.session.userid === doc.doc.userid ) {
             data.push( doc.doc );
           }
         }
@@ -32,9 +32,9 @@ module.exports = function(app){
    */
   app.post( '/playground/createPaleoResult', function( req, res, next ){
     console.log( 'createPaleoResult' );
-    var id = null;
-    var doc = {
-      userid: req.session.username,
+    const id = null;
+    const doc = {
+      userid: req.session.userid,
       value: req.body.value,
       datetime: req.body.datetime
     };
