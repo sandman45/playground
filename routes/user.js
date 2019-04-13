@@ -17,7 +17,8 @@ module.exports = function(app){
         if(data.password === crypto.SHA3(req.body.password).toString()){
           //set session
           if(req.session){
-            req.session.username = req.body.email;
+            req.session.userid = data._id;
+            req.session.username = data.username;
             req.session.firstname = data.firstname;
             req.session.lastname = data.lastname;
             req.session.email = data.email;
@@ -46,9 +47,9 @@ module.exports = function(app){
      res.status(200).send('success');
   });
 
-  app.get('/playground/user/:id', function( req, res, next ){
-    console.log(`/playground/user/:id => ${req.params.id}`);
-    couchService.view('getUserByEmail', 'get-user-by-email', req.params.id === "refresh" ? req.session.email : req.params.id).then( function( d ){
+  app.get('/playground/user/:email', function( req, res, next ){
+    console.log(`/playground/user/:email => ${req.params.email}`);
+    couchService.view('getUserByEmail', 'get-user-by-email', req.params.email === "refresh" ? req.session.email : req.params.email).then( function( d ){
       res.status( 200 ).send(d);
     })
       .fail(function( err ){

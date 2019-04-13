@@ -95,7 +95,7 @@ server.listen(port, function() {
  * @param next
  */
 function securityCheck(req, res, next) {
-  console.log(`security check: ${req.session.email}`);
+  console.log(`security check => email: ${req.session.email} userid: ${req.session.userid}`);
   // if (req.session) {
   //   if (_.has(req.session, 'username')) {
   //     if (req.session.username === req.session.username) {
