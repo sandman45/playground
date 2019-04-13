@@ -34,7 +34,7 @@ module.exports = function(app){
     console.log( 'createPaleoResult' );
     const id = null;
     const doc = {
-      userid: req.session.userid ? req.session.userid : req.body.userid,
+      userid: req.body.userid,
       value: req.body.value,
       datetime: req.body.datetime
     };
