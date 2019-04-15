@@ -8,7 +8,8 @@ controllers.controller('spaceCtrl', //$http,$routParams
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
     var container, stats;
-
+    var backendUrl = 'http://playground.mattsanders.org:3000/';
+    // var backendUrl = 'http://localhost:3000';
     var camera, scene, renderer, objects;
     var particleLight;
 
@@ -101,7 +102,7 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
       //model
        var model = {
-        path:'http://localhost:8081/js/app/playground/space/space-explore/models/tieFighter/starwars-tie-fighter.json',
+        path:`${backendUrl}/js/app/playground/space/space-explore/models/tieFighter/starwars-tie-fighter.json`,
         texture:'js/app/playground/space/space-explore/models/Spitfire/Spitfire.png'
        };
 
@@ -116,7 +117,7 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
 
       var model2 = {
-        path:'http://localhost:8081/js/app/playground/space/space-explore/models/mFalcon/starwars-millennium-falcon.json',
+        path:`${backendUrl}/js/app/playground/space/space-explore/models/mFalcon/starwars-millennium-falcon.json`,
         texture:'js/app/playground/space/space-explore/models/Spitfire/Spitfire.png'
       };
 
