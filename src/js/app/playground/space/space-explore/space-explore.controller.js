@@ -8,7 +8,7 @@ controllers.controller('spaceCtrl', //$http,$routParams
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
     var container, stats;
-    var backendUrl = 'http://playground.mattsanders.org:3000/';
+    var backendUrl = 'http://playground.mattsanders.org:3000';
     // var backendUrl = 'http://localhost:3000';
     var camera, scene, renderer, objects;
     var particleLight;
