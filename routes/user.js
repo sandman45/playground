@@ -10,6 +10,7 @@ const uuid = require('uuid');
 
 module.exports = function(app){
   app.post('/login', function( req, res, next ){
+    console.log(JSON.stringify(req.body));
     console.log(`/login/:id => ${req.body.email}`);
     if(req.body.email && req.body.email.length>0){
       couchService.view('getUserByEmail', 'get-user-by-email', req.body.email).then(function(data){

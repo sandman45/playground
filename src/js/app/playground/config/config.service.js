@@ -5,7 +5,7 @@ var app = angular.module('playGroundApp');
 
 app.service('config', function() {
   this.api = {
-    url: 'http://playground.mattsanders.org:3000/',
-    // url: 'http://localhost:3000/'
+    url: 'http://playground.mattsanders.org/',
+    // url: 'http://localhost/'
   };
 });

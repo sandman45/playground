@@ -9,6 +9,7 @@ app.factory('service', function( $http, $q, $location, $log, config ) {
   service.login = function( data ){
     var d = $q.defer();
     var _url = url + "login";
+    $log.info(JSON.stringify($http.defaults.headers));
     $http.post( _url, data).success( function( data, status, headers, config ) {
       d.resolve(data);
     })

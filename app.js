@@ -42,6 +42,7 @@ app.use(express.static('src'));
 app.use(allowCrossDomain);
 // app.use(app.router);
 
+// Need to figure out why CORS issues are having problems on prod
 app.options('/*', function(req, res){
   res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
@@ -80,7 +81,7 @@ io.sockets.on('connection', function(socket){
 
 
 
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 3000;
 const env = process.env.NODE_ENV || 'local';
 
 server.listen(port, function() {
