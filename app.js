@@ -33,18 +33,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieSession({
-  secret: process.env.SESSION_SECRET,
+    name: 'session',
+    keys: [process.env.SESSION_SECRET],
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
 app.use(express.static('src'));
 app.use(allowCrossDomain);
 // app.use(app.router);
 
+// Need to figure out why CORS issues are having problems on prod
 app.options('/*', function(req, res){
   res.header('Access-Control-Allow-Origin', req.headers.origin || "*");
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'content-Type,x-requested-with');
-  res.status(200).send(200);
+  res.sendStatus(200);
 });
 
 //-- require all routes in playground directory to run security check
@@ -78,7 +81,7 @@ io.sockets.on('connection', function(socket){
 
 
 
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 3000;
 const env = process.env.NODE_ENV || 'local';
 
 server.listen(port, function() {

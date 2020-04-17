@@ -9,12 +9,12 @@ module.exports = function(app){
   /**
    * paleo-results
    */
-  app.get('/playground/paleo-results/:id', function( req, res, next ) {
+  app.get('/playground/paleo-results/:userid', function( req, res, next ) {
     couchService.get().then( function ( d ) {
       const data = [];
       d.forEach( function (doc) {
         if( _.has( doc.doc, 'userid' ) ) {
-          if( req.session.userid === doc.doc.userid ) {
+          if( req.params.userid === doc.doc.userid ) {
             data.push( doc.doc );
           }
         }
@@ -34,7 +34,7 @@ module.exports = function(app){
     console.log( 'createPaleoResult' );
     const id = null;
     const doc = {
-      userid: req.session.userid,
+      userid: req.body.userid,
       value: req.body.value,
       datetime: req.body.datetime
     };
