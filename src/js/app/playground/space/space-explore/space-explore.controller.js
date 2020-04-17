@@ -4,11 +4,10 @@
 controllers.controller('spaceCtrl', //$http,$routParams
   function ($scope, $http, spaceLoader) {
 
-
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
     var container, stats;
-    var backendUrl = 'http://playground.mattsanders.org:3000';
+    var backendUrl = 'http://playground.mattsanders.org';
     // var backendUrl = 'http://localhost:3000';
     var camera, scene, renderer, objects;
     var particleLight;
@@ -105,6 +104,7 @@ controllers.controller('spaceCtrl', //$http,$routParams
         path:`${backendUrl}/js/app/playground/space/space-explore/models/tieFighter/starwars-tie-fighter.json`,
         texture:'js/app/playground/space/space-explore/models/Spitfire/Spitfire.png'
        };
+      console.log(`space-explore-controller-${model.path}`);
 
       for( var j = 0; j < 3; j++){
         var position = {

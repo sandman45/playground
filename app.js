@@ -8,6 +8,7 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const schedule = require('node-schedule');
+var cors = require('cors');
 
 const cookieSession = require('cookie-session');
 
@@ -18,14 +19,15 @@ const cookieSession = require('cookie-session');
  * @param res
  * @param next
  */
-const allowCrossDomain = function(req,res,next){
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-};
+// const allowCrossDomain = function(req,res,next){
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Content-Type');
+//     next();
+// };
 
 const app = express();
+app.use(cors());
 const server = http.Server(app);
 const io = require('socket.io').listen(server);
 
@@ -39,7 +41,7 @@ app.use(cookieSession({
 }));
 
 app.use(express.static('src'));
-app.use(allowCrossDomain);
+// app.use(allowCrossDomain);
 // app.use(app.router);
 
 // Need to figure out why CORS issues are having problems on prod
