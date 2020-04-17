@@ -15,6 +15,7 @@ module.exports = function(app){
     if(req.body.email && req.body.email.length>0){
       couchService.view('getUserByEmail', 'get-user-by-email', req.body.email).then(function(data){
         console.log(`user data: ${JSON.stringify(data)}`);
+        console.log(`pass: ${req.body.password} crypto: ${crypto.SHA3(req.body.password).toString()}`);
         if(data.password === crypto.SHA3(req.body.password).toString()){
           //set session
           if(req.session){
