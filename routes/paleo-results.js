@@ -4,7 +4,7 @@
 
 const CouchService = require('../routeUtil/couchService');
 const couchService = new CouchService('paleo_results');
-const _ = require('underscore');
+const _ = require('lodash');
 module.exports = function(app){
   /**
    * paleo-results

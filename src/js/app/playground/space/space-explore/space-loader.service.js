@@ -9,6 +9,7 @@ app.factory('spaceLoader', function( $q, $log ) {
 
   service.loadModel = function( scene, objects, model, position, id, name){
     var loader = new THREE.ObjectLoader();
+    console.log(`model path: ${model.path}`);
     loader.load(model.path,function ( obj ) {
       obj.position.x = position.x;
       obj.position.y = position.y;
