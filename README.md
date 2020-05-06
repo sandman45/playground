@@ -1,3 +1,5 @@
+![Node.js CI](https://github.com/sandman45/playground/workflows/Node.js%20CI/badge.svg)
+
 playground
 ==========
 
