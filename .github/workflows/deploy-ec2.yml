@@ -27,8 +27,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
         
-      - name: Copy code to EC2
-        run: echo Deploy to EC2
+      - name: Connect to Instance
+        run: mssh i-00002e1d37091fb09
           
      
   # This workflow contains a single job called "build"
