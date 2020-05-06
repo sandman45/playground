@@ -15,7 +15,12 @@ controllers.controller('spaceCtrl', //$http,$routParams
     let tiePosition = {
       x: 20,
       y: 30,
-      z: 40
+      z: 40,
+      rotation: {
+        x: 0,
+        y: 4,
+        z: 0
+      }
     };
     setTimeout(() => {
       init();
@@ -138,7 +143,12 @@ controllers.controller('spaceCtrl', //$http,$routParams
           y:25,
           z:0
         };
-        spaceLoader.loadModel(scene, objects, model, position, j, 'tie-squad-1-' + j);
+        const rotation = {
+          x:0,
+          y:4,
+          z:0
+        };
+        spaceLoader.loadModel(scene, objects, model, position, rotation, j, 'tie-squad-1-' + j);
       }
 
       for( let e = 0; e < 3; e++){
@@ -147,7 +157,12 @@ controllers.controller('spaceCtrl', //$http,$routParams
           y:175,
           z:400
         };
-        spaceLoader.loadModel(scene, objects, model, position, e, 'tie-squad-2-' + e);
+        const rotation = {
+          x:0,
+          y:4,
+          z:0
+        };
+        spaceLoader.loadModel(scene, objects, model, position, rotation, e, 'tie-squad-2-' + e);
       }
 
       // has cross origin errors for the textures
@@ -156,7 +171,7 @@ controllers.controller('spaceCtrl', //$http,$routParams
       //   texture:'js/app/playground/space/space-explore/models/Spitfire/Spitfire.png'
       // };
       //
-      // spaceLoader.loadModel(scene, objects, model2, {x:200,y:150,z:150}, 5, 'falcon');
+      // spaceLoader.loadModel(scene, objects, model2, {x:200,y:150,z:150}, {x:0,y:4,z:0} 5, 'falcon');
 
 
 
@@ -281,39 +296,56 @@ controllers.controller('spaceCtrl', //$http,$routParams
             object.position.x -= 2;
             // object.position.y -= 10;
             object.position.z -= 2;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
           }
           else if(object.name === 'tie-squad-2-1'){
             object.position.x -= 2;
             // object.position.y -= 10;
             object.position.z -= 2;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
           }
           else if(object.name === 'tie-squad-2-2'){
             object.position.x -= 2;
             // object.position.y -= 10;
             object.position.z -= 2;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
           }
         } else {
           if(object.name === 'tie-squad-2-0'){
-            object.position.x = tiePosition.x;
+            object.position.x = tiePosition.x - 30;
             // object.position.y -= 10;
-            object.position.z = tiePosition.z;
+            object.position.z = tiePosition.z - 30;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
           }
           else if(object.name === 'tie-squad-2-1'){
-            object.position.x = tiePosition.x + 10;
+            object.position.x = tiePosition.x - 50;
             // object.position.y -= 10;
-            object.position.z = tiePosition.z;
+            object.position.z = tiePosition.z - 50;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
           }
           else if(object.name === 'tie-squad-2-2'){
-            object.position.x = tiePosition.x + 20;
+            object.position.x = tiePosition.x - 20;
             // object.position.y -= 10;
-            object.position.z = tiePosition.z;
+            object.position.z = tiePosition.z - 30;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
+            // console.log(`rotation x: ${object.rotation.x}, y: ${object.rotation.y}, z: ${object.rotation.z} `)
           }
         }
 
 
       }
-
-
 
       //particleLight.position.x = Math.sin( timer * 7 ) * 300;
       //particleLight.position.y = Math.cos( timer * 5 ) * 400;
@@ -323,22 +355,34 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
     }
 
-
-
     $scope.reposition = (type) => {
       if (type === 1) {
         flyby = true;
       }
     };
 
+    $scope.rotate = (type) => {
+      if (type === 1) {
+        tiePosition.rotation.z += .2;
+        // for x rotation use decimals
+      } else if (type === 2) {
+        tiePosition.rotation.z -= .2;
+      }
+    };
+
     $scope.reset = (type) => {
       if (type === 1) {
         tiePosition.x = 400;
-        tiePosition.y = 10;
+        tiePosition.y = 175;
         tiePosition.z = 400;
+        tiePosition.rotation.x = 0;
+        tiePosition.rotation.y = 4;
+        tiePosition.rotation.z = 0;
         flyby = false;
       }
     };
 
-
   });
+/// z-axis is roll for the model
+///  y-axis is yaw positive is left, neg is right
+///  x-axis is pitch. positive is pitch down, negative pitch up
