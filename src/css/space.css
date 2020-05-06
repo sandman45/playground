@@ -1,0 +1,10 @@
+.space-container{
+    height: 80%;
+    width: 100%;
+}
+.control-bar{
+    padding: 10px;
+    height: 20%;
+    background-color: grey;
+}
+

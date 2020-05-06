@@ -10,11 +10,12 @@ function checkCookie(){
 function showCookieFail(){
     // do something here
     // alert('Show Cookie Failed');
-    console.log('Cookie failed');
+    console.log('Show Cookie Failed');
 }
 
 
 // within a window load,dom ready or something like that place your:
 const cookie = checkCookie();
 
+// alert(`Cookies Enabled: ${cookie}`);
 console.log(`Cookies Enabled: ${cookie}`);

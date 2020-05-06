@@ -6,54 +6,85 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
-    var container, stats;
-    var backendUrl = 'http://playground.mattsanders.org';
-    // var backendUrl = 'http://localhost:3000';
-    var camera, scene, renderer, objects;
-    var particleLight;
+    let container, stats;
+    const backendUrl = 'http://playground.mattsanders.org';
+    // const backendUrl = 'http://localhost:3000';
+    let camera, scene, renderer, objects;
+    let particleLight;
+    let flyby = false;
+    let tiePosition = {
+      x: 20,
+      y: 30,
+      z: 40,
+      rotation: {
+        x: 0,
+        y: 4,
+        z: 0
+      }
+    };
+    setTimeout(() => {
+      init();
+      animate();
+      // onWindowResize();
+    }, 1000);
 
-    init();
-    animate();
+
+
+    function onWindowResize() {
+      const canvasContainer = document.getElementById("space-container").getBoundingClientRect();
+      const width = canvasContainer.width;
+      const height = canvasContainer.height;
+      console.log(`height: ${height}, width: ${width}`);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize( width, height );
+    }
 
     function init() {
 
-      container = document.createElement( 'div' );
-      document.getElementById("container").appendChild( container );
-
-      camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 2000 );
+      container = document.getElementById( 'scene' );
+      const canvasContainer = document.getElementById("space-container").getBoundingClientRect();
+      const width = canvasContainer.width;
+      let height = canvasContainer.height;
+      // alert(`width: ${width}, height: ${height}`);
+      if(height === 0) {
+        height = 600;
+      }
+      camera = new THREE.PerspectiveCamera( 40, width / height, 1, 2000 );
       camera.position.set( 0, 200, 0 );
 
       scene = new THREE.Scene();
 
       // Materials
+      THREE.ImageUtils.crossOrigin = "";
+      // const imgTexture2 = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/moon_1024.jpg" );
+      // imgTexture2.wrapS = imgTexture2.wrapT = THREE.RepeatWrapping;
+      // imgTexture2.anisotropy = 16;
 
-      var imgTexture2 = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/moon_1024.jpg" );
-      imgTexture2.wrapS = imgTexture2.wrapT = THREE.RepeatWrapping;
-      imgTexture2.anisotropy = 16;
 
-      var imgTexture = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/lavatile.jpg" );
+      const imgTexture = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/lavatile.jpg" );
       imgTexture.repeat.set( 4, 2 );
       imgTexture.wrapS = imgTexture.wrapT = THREE.RepeatWrapping;
       imgTexture.anisotropy = 16;
 
-      var imgTexture3 = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/planet_cerca_trova_1600.jpg" );
-      imgTexture3.repeat.set( 4, 2 );
-      imgTexture3.wrapS = imgTexture3.wrapT = THREE.RepeatWrapping;
-      imgTexture3.anisotropy = 16;
+      // const imgTexture3 = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/planet_cerca_trova_1600.jpg" );
+      // imgTexture3.repeat.set( 4, 2 );
+      // imgTexture3.wrapS = imgTexture3.wrapT = THREE.RepeatWrapping;
+      // imgTexture3.anisotropy = 16;
 
-      var imgTexture4 = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/planet_Terminus1200.png" );
-      imgTexture4.repeat.set( 4, 2 );
-      imgTexture4.wrapS = imgTexture4.wrapT = THREE.RepeatWrapping;
-      imgTexture4.anisotropy = 16;
+      // const imgTexture4 = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/planet_Terminus1200.png" );
+      // imgTexture4.repeat.set( 4, 2 );
+      // imgTexture4.wrapS = imgTexture4.wrapT = THREE.RepeatWrapping;
+      // imgTexture4.anisotropy = 16;
 
-      var imgTexture5 = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/earth.jpg" );
-      imgTexture5.repeat.set( 4, 2 );
-      imgTexture5.wrapS = imgTexture5.wrapT = THREE.RepeatWrapping;
-      imgTexture5.anisotropy = 16;
+      // const imgTexture5 = THREE.ImageUtils.loadTexture( "js/app/playground/space/space-explore/textures/earth.jpg" );
+      // imgTexture5.repeat.set( 4, 2 );
+      // imgTexture5.wrapS = imgTexture5.wrapT = THREE.RepeatWrapping;
+      // imgTexture5.anisotropy = 16;
 
-      var shininess = 50, specular = 0x333333, bumpScale = 1, shading = THREE.SmoothShading;
+      const shininess = 50, specular = 0x333333, bumpScale = 1, shading = THREE.SmoothShading;
 
-      var materials = [];
+      const materials = [];
 
       materials.push( new THREE.MeshPhongMaterial( { map: imgTexture, bumpMap: imgTexture, bumpScale: bumpScale, color: 0xffffff, specular: specular, shininess: shininess, shading: shading } ) );
       //materials.push( new THREE.MeshPhongMaterial( { map: imgTexture, bumpMap: imgTexture, bumpScale: bumpScale, color: 0x00ff00, specular: specular, shininess: shininess, shading: shading } ) );
@@ -74,23 +105,23 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
       // Spheres geometry
 
-      var geometry_smooth = new THREE.SphereGeometry( 70, 32, 16 );
-      var geometry_flat = new THREE.SphereGeometry( 70, 32, 16 );
+      const geometry_smooth = new THREE.SphereGeometry( 70, 32, 16 );
+      const geometry_flat = new THREE.SphereGeometry( 70, 32, 16 );
 
       objects = [];
 
-      var sphere, geometry, material;
+      let sphere, geometry, material;
 
-      for ( var i = 0, l = materials.length; i < l; i ++ ) {
+      for ( let i = 0, l = materials.length; i < l; i ++ ) {
 
         material = materials[ i ];
 
         geometry = material.shading == THREE.FlatShading ? geometry_flat : geometry_smooth;
 
         sphere = new THREE.Mesh( geometry, material );
-
-        sphere.position.x = 0//( i % 4 ) * 200 - 200;
-        sphere.position.z = 0//Math.floor( i / 4 ) * 200 - 200;
+        sphere.name = "planet";
+        sphere.position.x = 0;//( i % 4 ) * 200 - 200;
+        sphere.position.z = 0;//Math.floor( i / 4 ) * 200 - 200;
         sphere.position.y = 0;
         objects.push( sphere );
 
@@ -100,31 +131,52 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
 
       //model
-       var model = {
+       const model = {
         path:`${backendUrl}/js/app/playground/space/space-explore/models/tieFighter/starwars-tie-fighter.json`,
         texture:'js/app/playground/space/space-explore/models/Spitfire/Spitfire.png'
        };
       console.log(`space-explore-controller-${model.path}`);
 
-      for( var j = 0; j < 3; j++){
-        var position = {
+      for( let j = 0; j < 3; j++){
+        const position = {
           x:25*j,
           y:25,
           z:0
         };
-        spaceLoader.loadModel(scene, objects, model, position, j, 'tie' + j);
+        const rotation = {
+          x:0,
+          y:4,
+          z:0
+        };
+        spaceLoader.loadModel(scene, objects, model, position, rotation, j, 'tie-squad-1-' + j);
       }
 
+      for( let e = 0; e < 3; e++){
+        const position = {
+          x:400 + (e * 2),
+          y:175,
+          z:400
+        };
+        const rotation = {
+          x:0,
+          y:4,
+          z:0
+        };
+        spaceLoader.loadModel(scene, objects, model, position, rotation, e, 'tie-squad-2-' + e);
+      }
 
-      var model2 = {
-        path:`${backendUrl}/js/app/playground/space/space-explore/models/mFalcon/starwars-millennium-falcon.json`,
-        texture:'js/app/playground/space/space-explore/models/Spitfire/Spitfire.png'
-      };
+      // has cross origin errors for the textures
+      // const model2 = {
+      //   path:`${backendUrl}/js/app/playground/space/space-explore/models/mFalcon/starwars-millennium-falcon.json`,
+      //   texture:'js/app/playground/space/space-explore/models/Spitfire/Spitfire.png'
+      // };
+      //
+      // spaceLoader.loadModel(scene, objects, model2, {x:200,y:150,z:150}, {x:0,y:4,z:0} 5, 'falcon');
 
-      spaceLoader.loadModel(scene, objects, model2, {x:200,y:150,z:150}, 5, 'falcon');
+
 
       //----Grid Board-------//
-      var matrix = [
+      const matrix = [
         [0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0],
@@ -134,17 +186,13 @@ controllers.controller('spaceCtrl', //$http,$routParams
       ];
 
       //// plane
-      //var plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshNormalMaterial());
+      //const plane = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), new THREE.MeshNormalMaterial());
       //plane.overdraw = true
       //plane.name = 'gridBoard';
       //plane.rotation.z = 0;
       //plane.rotation.x = 90;
       //plane.rotation.y = 0;
       //scene.add( plane );
-
-
-
-
 
 
       particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
@@ -154,11 +202,11 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
       scene.add( new THREE.AmbientLight( 0x444444 ) );
 
-      var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
+      const directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
       directionalLight.position.set( 1, 1, 1 ).normalize();
       scene.add( directionalLight );
 
-      var pointLight = new THREE.PointLight( 0xffffff, 2, 800 );
+      const pointLight = new THREE.PointLight( 0xffffff, 2, 800 );
       //particleLight.add( pointLight );
 
       //
@@ -166,7 +214,7 @@ controllers.controller('spaceCtrl', //$http,$routParams
       renderer = new THREE.WebGLRenderer( { antialias: true } );
       renderer.setClearColor( 0x000000 );
       renderer.setPixelRatio( window.devicePixelRatio );
-      renderer.setSize( window.innerWidth, window.innerHeight );
+      renderer.setSize( width, height );
       renderer.sortObjects = true;
 
       container.appendChild( renderer.domElement );
@@ -176,11 +224,11 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
       //
 
-      stats = new Stats();
-      stats.domElement.style.position = 'absolute';
-      stats.domElement.style.top = '0px';
-
-      container.appendChild( stats.domElement );
+      // stats = new Stats();
+      // stats.domElement.style.position = 'absolute';
+      // stats.domElement.style.top = '0px';
+      //
+      // container.appendChild( stats.domElement );
 
       //
 
@@ -188,14 +236,7 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
     }
 
-    function onWindowResize() {
 
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-
-      renderer.setSize( window.innerWidth, window.innerHeight );
-
-    }
 
     //
 
@@ -204,50 +245,107 @@ controllers.controller('spaceCtrl', //$http,$routParams
       requestAnimationFrame( animate );
 
       render();
-      stats.update();
+      // stats.update();
 
     }
 
     function render() {
 
-      var timer = Date.now() * 0.00025;
-      var timer2 = Date.now() * 0.000025;
-      camera.position.x = Math.cos( timer ) * 800;
-      camera.position.z = Math.sin( timer ) * 800;
-
+      const timer = Date.now() * 0.00025;
+      const timer2 = Date.now() * 0.000025;
+      // camera.position.x = Math.cos( timer ) * 400;
+      // camera.position.z = Math.sin( timer ) * 400;
+      camera.position.x = 400;
+      camera.position.z = 400;
       camera.lookAt( scene.position );
 
-      for ( var i = 0, l = objects.length; i < l; i ++ ) {
+      for ( let i = 0, l = objects.length; i < l; i ++ ) {
 
-        var object = objects[ i ];
+        const object = objects[ i ];
 
-        if(object.name === 'tie0'){
+        if(object.name === 'tie-squad-1-0'){
           object.position.x = Math.sin( timer2 * 7 ) * 325;
           object.position.y = Math.cos( timer2 * 5 ) * 425;
           object.position.z = Math.cos( timer2 * 3 ) * 325;
         }
-        else if(object.name === 'tie1'){
+        else if(object.name === 'tie-squad-1-1'){
           object.position.x = Math.sin( timer2 * 7 ) * 300;
           object.position.y = Math.cos( timer2 * 5 ) * 400;
           object.position.z = Math.cos( timer2 * 3 ) * 300;
         }
-        else if(object.name === 'tie2'){
+        else if(object.name === 'tie-squad-1-2'){
           object.position.x = Math.sin( timer2 * 7 ) * 350;
           object.position.y = Math.cos( timer2 * 5 ) * 450;
           object.position.z = Math.cos( timer2 * 3 ) * 325;
-        }else if(object.name === 'falcon'){
+        }
+
+        if(object.name === 'falcon'){
           object.position.x = Math.sin( timer2 * 7 ) * 150;
           object.position.y = Math.cos( timer2 * 5 ) * 350;
           object.position.z = Math.cos( timer2 * 3 ) * 450;
         }
 
-        else{
-          //object.rotation.y += 0.005;
+        else if(object.name === "planet"){
+          object.rotation.y += 0.005;
         }
 
+
+        // START fly by
+        if (flyby) {
+          if(object.name === 'tie-squad-2-0'){
+            object.position.x -= 2;
+            // object.position.y -= 10;
+            object.position.z -= 2;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
+          }
+          else if(object.name === 'tie-squad-2-1'){
+            object.position.x -= 2;
+            // object.position.y -= 10;
+            object.position.z -= 2;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
+          }
+          else if(object.name === 'tie-squad-2-2'){
+            object.position.x -= 2;
+            // object.position.y -= 10;
+            object.position.z -= 2;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
+          }
+        } else {
+          if(object.name === 'tie-squad-2-0'){
+            object.position.x = tiePosition.x - 30;
+            // object.position.y -= 10;
+            object.position.z = tiePosition.z - 30;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
+          }
+          else if(object.name === 'tie-squad-2-1'){
+            object.position.x = tiePosition.x - 50;
+            // object.position.y -= 10;
+            object.position.z = tiePosition.z - 50;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
+          }
+          else if(object.name === 'tie-squad-2-2'){
+            object.position.x = tiePosition.x - 20;
+            // object.position.y -= 10;
+            object.position.z = tiePosition.z - 30;
+            object.rotation.y = tiePosition.rotation.y;
+            object.rotation.x = tiePosition.rotation.x;
+            object.rotation.z = tiePosition.rotation.z;
+            // console.log(`rotation x: ${object.rotation.x}, y: ${object.rotation.y}, z: ${object.rotation.z} `)
+          }
+        }
+
+
       }
-
-
 
       //particleLight.position.x = Math.sin( timer * 7 ) * 300;
       //particleLight.position.y = Math.cos( timer * 5 ) * 400;
@@ -257,4 +355,34 @@ controllers.controller('spaceCtrl', //$http,$routParams
 
     }
 
+    $scope.reposition = (type) => {
+      if (type === 1) {
+        flyby = true;
+      }
+    };
+
+    $scope.rotate = (type) => {
+      if (type === 1) {
+        tiePosition.rotation.z += .2;
+        // for x rotation use decimals
+      } else if (type === 2) {
+        tiePosition.rotation.z -= .2;
+      }
+    };
+
+    $scope.reset = (type) => {
+      if (type === 1) {
+        tiePosition.x = 400;
+        tiePosition.y = 175;
+        tiePosition.z = 400;
+        tiePosition.rotation.x = 0;
+        tiePosition.rotation.y = 4;
+        tiePosition.rotation.z = 0;
+        flyby = false;
+      }
+    };
+
   });
+/// z-axis is roll for the model
+///  y-axis is yaw positive is left, neg is right
+///  x-axis is pitch. positive is pitch down, negative pitch up
