@@ -15,7 +15,7 @@ A playground where I
 
 - recipe idea (WIP)
 
-#Docker
+# Docker
 
 `docker build -t playground .`    // dont forget the period at the end
 
