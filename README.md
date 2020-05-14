@@ -17,7 +17,7 @@ A playground where I
 
 #Docker
 
-`docker build -t hello-world .`    // dont forget the period at the end
+`docker build -t playground .`    // dont forget the period at the end
 
 `docker run -p 3000:3000 playground`
 
